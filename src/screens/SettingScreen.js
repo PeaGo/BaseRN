@@ -9,7 +9,7 @@ export default class Setting extends Component {
         return (
             <View style={[STYLE_CONTAINER, {alignItems:'center', justifyContent: 'center',}]}>
                 <Text style={{fontSize: sizeFont(5)}}>
-                    Home Screen
+                    Setting Screen
                 </Text>
             </View>
         );
