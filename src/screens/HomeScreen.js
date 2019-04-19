@@ -27,6 +27,14 @@ import {sizeFont} from '../helper/size.helper'
         );
     }
 }
+
+
+const mapsStateToProps = (state) => {
+    return {
+        userStatus : state.userStatus.userStatus
+    }
+}
+
 const mapsDispatchToProps = (dispatch) => {
     return {
         showLoading : () => {
@@ -38,4 +46,4 @@ const mapsDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapsDispatchToProps)(Home)
+export default connect(mapsStateToProps, mapsDispatchToProps)(Home)

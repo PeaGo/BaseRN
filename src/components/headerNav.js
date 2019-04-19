@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import {
     View, Text, StyleSheet, SafeAreaView, TouchableOpacity
 } from 'react-native'
-import { sizeFont, sizeHeight, sizeWidth } from '../helpers/size.helper'
+import { sizeFont, sizeHeight, sizeWidth } from '../helper/size.helper'
 import { PRIMARY_COLOR } from '../config/app.config'
-import Icon from 'react-native-vector-icons/FontAwesome5Pro'
+import Icon from 'react-native-vector-icons/FontAwesome'
 export default class headerNav extends Component {
     render() {
         const { actionLeft, actionRight, iconLeft, iconRight, title } = this.props
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     },
     text_title:{
         fontSize: sizeFont(5),
-        color: `${PRIMARY_COLOR}`,
+        //color: `${PRIMARY_COLOR}`,
         fontWeight: 'normal',
     },
     left : {
