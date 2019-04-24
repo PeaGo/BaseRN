@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { sizeHeight, sizeFont, sizeWidth } from "../helper/size.helper";
 import { USER_STATUS_ACTION, setUserStatus } from "../redux/actions/userStatus.action"
 import {show_loading, hide_loading} from '../redux/actions/loading.action'
+import RNRestart from 'react-native-restart'
 class Logout extends Component {
     render() {
         return (
@@ -19,9 +20,9 @@ class Logout extends Component {
                             { text: 'NO', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
                             {
                                 text: 'YES', onPress: async () => {
-                                    this.props.updateUserStatus(USER_STATUS_ACTION.LOGIN_STATUS);
+                                    //this.props.updateUserStatus(USER_STATUS_ACTION.LOGIN_STATUS);
                                     await AsyncstorageHelper._removeData('userData');
-    
+                                    RNRestart.Restart();
                                     console.log(this.props);
                                 }
                             },
