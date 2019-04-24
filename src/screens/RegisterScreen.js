@@ -16,7 +16,7 @@ class Register extends Component {
                         title = {'Đăng ký'}
         />
                 <View style={styles.head}>
-                    <Text>Register</Text>
+                    <Text style={{fontWeight : 'bold', color : 'green', fontSize: sizeWidth(10)}}>Register</Text>
                 </View>
                 <View style={styles.input_container}>
                     <View style={styles.input_row}>
@@ -45,6 +45,14 @@ class Register extends Component {
     }
 }
 const styles = StyleSheet.create({
+    head : {
+        flex : 1,
+        alignItems : 'center',
+        justifyContent : 'center'
+    },
+    input_container: {
+        flex : 2,
+    },
     input_row: {
         paddingLeft: sizeWidth(10),
         paddingRight: sizeWidth(10),
