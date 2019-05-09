@@ -17,8 +17,10 @@ class Main extends Component {
         this.props.showLoading();
         await AsyncstorageHelper._retrieveData('userData').then(userdata => {
             let userJson = JSON.parse(userdata);
+            console.log(userJson);
+            
             if (userJson != null) {
-                if (userJson.id) {
+                if (userJson._id) {
                     this.props.updateUserStatus(USER_STATUS_ACTION.AUTHOR_STATUS);
                 }
             }

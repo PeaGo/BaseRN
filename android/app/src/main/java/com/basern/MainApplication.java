@@ -3,7 +3,6 @@ package com.basern;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
@@ -25,9 +24,8 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new ReactNativeRestartPackage(),
-            new RNGestureHandlerPackage(),
+          new MainReactPackage(),   
+         new RNGestureHandlerPackage(),
             new VectorIconsPackage()
       );
     }

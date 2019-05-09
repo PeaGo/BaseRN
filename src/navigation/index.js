@@ -2,7 +2,7 @@ import { createAppContainer, createBottomTabNavigator } from 'react-navigation'
 import React, { Component } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { HomeStack } from './HomeStack'
-import { SettingStack } from './SettingStack'
+import { HouseUserStack } from './HouseUserStack'
 import ProfileStack  from './ProfileStack'
 
 export default createAppContainer(createBottomTabNavigator(
@@ -16,10 +16,10 @@ export default createAppContainer(createBottomTabNavigator(
                 )
             }
         },
-        Setting: {
-            screen: SettingStack,
+        HouseUser: {
+            screen: HouseUserStack,
             navigationOptions: {
-                tabBarLabel: 'Setting',
+                tabBarLabel: 'HouseUser',
                 tabBarIcon: ({ focused, tintColor }) => (
                     <Icon name={'cog'} size={25} color={focused ? 'tomato' : 'gray'} />
                 )

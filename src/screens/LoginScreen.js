@@ -16,35 +16,49 @@ import RequestHelper from '../helper/request.helper';
 class Login extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            email : '',
+            password: '',
+        };
     }
 
-    _fake_call_api() {
-            let fake_data = { type: 1, id: 1, name: 'Tien' };
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    resolve(fake_data);
-                },
-                2000)
-            });
+    // _fake_call_api() {
+    //         let fake_data = { type: 1, id: 1, name: 'Tien' };
+    //         return new Promise((resolve, reject) => {
+    //             setTimeout(() => {
+    //                 resolve(fake_data);
+    //             },
+    //             2000)
+    //         });
        
-    }
-    async _login(userdata) {
+    // }
+    async _login() {
         // goi api 
         //--  let res  = await login(userdata);
 
         //fake api call
-        this.props.showLoading();
-        let res = await this._fake_call_api(userdata) 
-        //console.log(res);
+        // this.props.showLoading();
+        let res = await login(this.state); 
+        console.log(res);
         
-        if (res.type == 1) {
+        if (res.token !== undefined && res.user !== null && res.user !== undefined && res.user !== {}) {
+            console.log('1');
+            
             this.props.updateUserStatus(USER_STATUS_ACTION.AUTHOR_STATUS);
-            await AsyncstorageHelper._storeData('userData', JSON.stringify(res));
+            await AsyncstorageHelper._storeData('userData', JSON.stringify(res.user));
+        }
+        else{
+            if(res.message){
+                alert(res.message)
+            }
+            else{
+                alert('Vui lòng bạn nhập đúng tài khoản và mật khẩu')
+            }
+            
         }
         this.props.hideLoading();
     }
     render() {
-        console.log(this.props);
         return (
             <View style={STYLE_CONTAINER}>
                 <View style={styles.head}>
@@ -53,11 +67,11 @@ class Login extends Component {
                 <View style={styles.input_container}>
                     <View style={styles.input_row}>
                         <Text style={styles.label_input}>Email</Text>
-                        <TextInput style={styles.input} placeholder={'email'}></TextInput>
+                        <TextInput keyboardType={'email-address'} style={styles.input} placeholder={'email'} value={this.state.email} onChangeText={(email) => this.setState({email})}></TextInput>
                     </View>
                     <View style={styles.input_row}>
                         <Text style={styles.label_input}>Password</Text>
-                        <TextInput style={styles.input} placeholder={'mật khẩu'}></TextInput>
+                        <TextInput style={styles.input} placeholder={'mật khẩu'} secureTextEntry={true} password={true} value={this.state.password} onChangeText={(password) => this.setState({password})}></TextInput>
                     </View>
                     <TouchableOpacity style={[styles.input_row,
                     {
@@ -66,7 +80,7 @@ class Login extends Component {
 
                     }]}
                     onPress = {() => {
-                        this._login(1);
+                        this._login();
                     }}
                     >
                         <Text> Đăng nhập </Text>
@@ -107,7 +121,7 @@ const styles = StyleSheet.create({
         paddingRight: sizeWidth(5),
         paddingTop: sizeHeight(1),
         paddingBottom: sizeHeight(1),
-        color: '#fff',
+        color: 'red',
         width: sizeWidth(60),
         borderRadius: 5,
 

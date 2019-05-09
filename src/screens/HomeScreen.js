@@ -7,10 +7,9 @@ import {connect} from 'react-redux'
 import {STYLE_CONTAINER} from '../config/app.config'
 import {sizeFont} from '../helper/size.helper'
  class Home extends Component {
+
     render () {
-        console.log(this.props);
-        console.log('Home props');
-        
+      
         return (
             <View style={[STYLE_CONTAINER, {alignItems:'center', justifyContent: 'center',}]}>
                 <Text style={{fontSize: sizeFont(5)}}>

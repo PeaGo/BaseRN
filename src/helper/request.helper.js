@@ -20,10 +20,12 @@ const preprocessResponse = data => {
 
 export default class RequestHelper {
   static async getHeader() {
+
     return {
       Accept: "application/json",
       "Content-Type": "application/json"
-    };
+    }
+
   }
 
   static async get(url, params) {
