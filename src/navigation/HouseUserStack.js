@@ -4,6 +4,7 @@ import LocationHouseScreen from '../screens/CreateLocationHouseScreen'
 import DescriptionHouse from '../screens/DescriptionHouse'
 import UtilitiesHouse from '../screens/UtilitiesHouse'
 import ConfirmHouse from '../screens/ConfirmHouseScreen'
+import DetailHouse from '../screens/DetailHouseScreen'
 
 export const HouseUserStack = createStackNavigator (
     {
@@ -12,6 +13,7 @@ export const HouseUserStack = createStackNavigator (
         DescriptionHouse : DescriptionHouse,
         UtilitiesHouse : UtilitiesHouse,
         ConfirmHouse : ConfirmHouse,
+        DetailHouse : DetailHouse
     },
     {
         headerMode : 'none'

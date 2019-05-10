@@ -42,7 +42,7 @@ export default class DescriptionHouse extends Component {
             address_detail: '',
             type_room: '',
             quantity_room: 0,
-            total_area:0,
+            total_area: 0,
             quantity_people: 0,
             type_sex: '',
             price: 0,
@@ -62,11 +62,12 @@ export default class DescriptionHouse extends Component {
     }
     render() {
         return (
-            <KeyboardAwareScrollView>
-                <View>
-                    <HeaderNav iconLeft='arrow-left'
-                        title="Tạo phòng mới"
-                        actionLeft={() => { this.props.navigation.goBack() }} />
+
+            <View style={{paddingBottom: 60}}>
+                <HeaderNav iconLeft='arrow-left'
+                    title="Tạo phòng mới"
+                    actionLeft={() => { this.props.navigation.goBack() }} />
+                <KeyboardAwareScrollView>
                     <View>
                         <Text>Loại phòng</Text>
                         <FlatList
@@ -158,14 +159,15 @@ export default class DescriptionHouse extends Component {
                     <View style={{ alignItems: 'center', flexDirection: 'column' }}>
                         <Button
                             onPress={() => {
-                                this.props.navigation.navigate('UtilitiesHouse',{inforHouse:this.state})
+                                this.props.navigation.navigate('UtilitiesHouse', { inforHouse: this.state })
                             }}
                             title="Tiếp theo"
                             color="#841584"
                         />
                     </View>
-                </View>
-            </KeyboardAwareScrollView>
+                </KeyboardAwareScrollView>
+            </View>
+
         );
     }
 }
