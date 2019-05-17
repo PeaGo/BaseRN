@@ -36,11 +36,11 @@ class ItemMenu extends Component {
 export default class Profile extends Component {
     render() {
         const menu = [
-            // {
-            //     title: 'Driver Schedule',
-            //     icon: 'list-alt',
-            //     screen: 'Schedule'
-            // },
+            {
+                title: 'Driver Schedule',
+                icon: 'list-alt',
+                screen: 'Schedule'
+            },
         ]
         return (
             <View style={styles.container}>

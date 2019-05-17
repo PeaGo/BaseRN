@@ -10,7 +10,7 @@ export default createAppContainer(createBottomTabNavigator(
         Home: {
             screen: HomeStack,
             navigationOptions: {
-                tabBarLabel: 'Home',
+                tabBarLabel: 'Tìm phòng',
                 tabBarIcon: ({ focused, tintColor }) => (
                     <Icon name={'home'} size={25} color={focused ? 'tomato' : 'gray'} />
                 )
@@ -19,9 +19,9 @@ export default createAppContainer(createBottomTabNavigator(
         HouseUser: {
             screen: HouseUserStack,
             navigationOptions: {
-                tabBarLabel: 'HouseUser',
+                tabBarLabel: 'Phòng của bạn',
                 tabBarIcon: ({ focused, tintColor }) => (
-                    <Icon name={'cog'} size={25} color={focused ? 'tomato' : 'gray'} />
+                    <Icon name={'list'} size={25} color={focused ? 'tomato' : 'gray'} />
                 )
             }
         },

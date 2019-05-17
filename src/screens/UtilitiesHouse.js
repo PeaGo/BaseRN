@@ -1,12 +1,29 @@
 import React, { Component } from 'react'
 import {
-    View, Text, StyleSheet, Button, TouchableOpacity, TextInput, FlatList
+    View, Text, StyleSheet, Button, TouchableOpacity, TextInput, FlatList, Image
 } from 'react-native'
 import { STYLE_CONTAINER } from '../config/app.config'
 import { sizeFont, sizeHeight, sizeWidth } from '../helper/size.helper'
 import HeaderNav from '../components/headerNav'
 import { CheckBox } from 'react-native-elements'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import ImagePicker from 'react-native-image-picker';
+const options = {
+    title: 'Select Avatar',
+    customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+    storageOptions: {
+        skipBackup: true,
+        path: 'images',
+    },
+    maxWidth: 200,
+    maxHeight: 200,
+};
+
+/**
+ * The first arg is the options object for customization (it can also be null or omitted for default options),
+ * The second arg is the callback which sends object: response (more info in the API Reference)
+ */
+
 
 class UtilitieItem extends Component {
     render() {
@@ -25,9 +42,38 @@ export default class UtilitiesHouse extends Component {
         super(props)
         this.state = {
             utilities: utilities_type,
+            images: [],
+            avatar: '',
             utilities_selected: [],
             change: false,
         }
+    }
+
+    showAvatar = _ => {
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+
+                // let images = this.state.images;
+                // images.push(response.data)
+                // You can also display the image using data:
+                this.setState({
+                    images: [...this.state.images, response.data]
+                }, () => console.log(this.state.images)
+                )
+
+
+
+            }
+        });
+
     }
     selectUtilitie = (item) => {
         is_selected = false
@@ -54,9 +100,9 @@ export default class UtilitiesHouse extends Component {
     }
     render() {
         let param = this.props.navigation.getParam('inforHouse');
-        console.log('----------',param);
-        
-        
+        console.log('----------', param);
+
+
         return (
             <KeyboardAwareScrollView>
                 <View>
@@ -64,10 +110,32 @@ export default class UtilitiesHouse extends Component {
                         title="Tiện ích phòng"
                         actionLeft={() => { this.props.navigation.goBack() }} />
                 </View>
+                <TouchableOpacity onPress={() => { this.showAvatar() }}>
+                    <View ><Text style={styles.textput}>+</Text></View>
+                </TouchableOpacity>
                 <View>
                     <FlatList
+
+                        data={this.state.images}
+                        renderItem={({ item, index }) => {
+                            let source = { uri: 'data:image/jpeg;base64,' + item };
+                            return (
+                                <Image style={styles.image} key={index} source={source} style={{ width: 100, height: 100 }} />
+                            )
+                        }}
+                        numColumns='5'
+                        keyExtractor={(item, index) => index.toString()}
+                        showsVerticalScrollIndicator={false}
+                        style={styles.images}>
+                    </FlatList>
+                </View>
+
+                <View>
+                    <FlatList
+                        style={{ marginTop: 30,marginBottom:10 }}
                         data={this.state.utilities}
                         extraData={this.state.utilities_selected}
+                        numColumns='3'
                         renderItem={({ item, index }) => {
                             var selected = false;
                             for (utilitie of this.state.utilities_selected) {
@@ -77,6 +145,7 @@ export default class UtilitiesHouse extends Component {
                             }
                             return (
                                 <UtilitieItem
+                                    style={{ width: 250 }}
                                     key={index}
                                     item={item}
                                     isSelect={selected}
@@ -84,31 +153,33 @@ export default class UtilitiesHouse extends Component {
                                 />
                             )
                         }}
-                        keyExtractor={(item, index) => item}
+                        keyExtractor={(item, index) => index.toString()}
                         showsVerticalScrollIndicator={false}
                     />
                 </View>
                 <View style={{ alignItems: 'center', flexDirection: 'column' }}>
-                        <Button
-                            onPress={() => {
-                                param.quantity_room =  parseInt(param.quantity_room)
-                                param.total_area =  parseInt(param.total_area)
-                                param.quantity_people =  parseInt(param.quantity_people)
-                                param.price =  parseInt(param.price)
-                                param.deposit =  parseInt(param.deposit)
-                                param.electric_bill =  parseInt(param.electric_bill)
-                                param.water_bill =  parseInt(param.water_bill)
-                    
-                                param = {
-                                    ...param,
-                                    utilities: this.state.utilities_selected
-                                }
-                                this.props.navigation.navigate('ConfirmHouse',{inforHouse:param})
-                            }}
-                            title="Tiếp theo"
-                            color="#841584"
-                        />
-                    </View>
+                    <Button
+                        onPress={() => {
+                            param.quantity_room = parseInt(param.quantity_room)
+                            param.total_area = parseInt(param.total_area)
+                            param.quantity_people = parseInt(param.quantity_people)
+                            param.price = parseInt(param.price)
+                            param.deposit = parseInt(param.deposit)
+                            param.electric_bill = parseInt(param.electric_bill)
+                            param.water_bill = parseInt(param.water_bill)
+                            param.check_bill = parseInt(param.check_bill)
+                            param = {
+                                ...param,
+                                utilities: this.state.utilities_selected,
+                                images: this.state.images
+                            }
+                            this.props.navigation.navigate('ConfirmHouse', { inforHouse: param })
+                        }}
+                        style={{ margin: 30 }}
+                        title="Tiếp theo"
+                        color="#841584"
+                    />
+                </View>
             </KeyboardAwareScrollView>
         );
     }
@@ -116,15 +187,17 @@ export default class UtilitiesHouse extends Component {
 const utilities_type = [
     "Chỗ để xe",
     "Cửa sổ",
-    "WC riêng",
-    "Máy lạnh",
-    "Tủ lạnh",
-    "Bếp ga",
-    "Bình nóng lạnh",
-    "Giường",
     "Wifi",
+    "WC riêng",
+    "Tủ đồ",
+    "Giường",
+    "Tủ lạnh",
     "An ninh",
+    "Tivi",
+    "Máy lạnh",
     "Chủ riêng",
+    "Bếp",
+    "Bình nóng lạnh",
 
 ]
 
@@ -132,6 +205,25 @@ const styles = StyleSheet.create({
     input_row: {
         margin: 20, padding: 10, borderWidth: 1, borderRadius: 5
     },
+    images: {
+        padding: 20,
+        borderWidth: 1,
+        borderRadius: 20,
+    },
+    image: {
+        margin: 5,
+        borderRadius: 50,
+
+    },
+    textput: {
+        textAlign: 'center',
+        backgroundColor: 'blue',
+        width: 20,
+        margin: 15,
+        alignSelf: 'center',
+        borderRadius: 50,
+    },
+
 })
 
 const mapsDispatchToProps = (dispatch) => {

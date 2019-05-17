@@ -1,24 +1,26 @@
 import React, { Component } from 'react'
 import {
-    View, Text, StyleSheet, Button, FlatList, Image,TouchableOpacity
+    View, Text, StyleSheet, Button, FlatList, Image, TouchableOpacity
 } from 'react-native'
 import { STYLE_CONTAINER } from '../config/app.config'
 import { sizeFont } from '../helper/size.helper'
 import { getUserHouse1 } from '../api/house'
-import {show_loading,hide_loading} from '../redux/actions/loading.action'
-import {getUserHouse} from '../redux/actions/house'
-import {connect} from 'react-redux'
+import { show_loading, hide_loading } from '../redux/actions/loading.action'
+import { getUserHouse } from '../redux/actions/house'
+import { connect } from 'react-redux';
+import { BASE_URL_API } from '../config/app.config'
 class Item extends Component {
-    render () {
-        const {item, navigation} = this.props;
+    render() {
+        const { item, navigation } = this.props;
         return (
             <TouchableOpacity style={{ flex: 1, flexDirection: 'row' }} onPress={() => {
-                navigation.navigate('DetailHouse',{inforHouse:item})
+                navigation.navigate('DetailHouse', { inforHouse: item })
             }}>
-                <Image source={{ uri: "http://i.imgur.com/ykHuo4y.jpg" }} style={styles.imageView} />
+                <Image source={{ uri: BASE_URL_API + '/' + item.image_path[0] }} style={styles.imageView} />
+
                 <View>
                     <Text style={styles.textView}>{item.title}</Text>
-                    <Text style={styles.textView}>Giá: {item.price}VND/tháng</Text>
+                    <Text style={styles.textView}>Giá: {Math.round(item.price/1000000 * 10) / 10} triệu/tháng</Text>
                     <Text style={styles.textView}>Diện tích: {item.total_area} m2</Text>
                 </View>
             </TouchableOpacity>
@@ -32,23 +34,28 @@ class HouseUser extends Component {
             houses: []
         };
     }
+    componentWillReceiveProps(nextProps){
+        if(nextProps.list_user_house!==this.props.list_user_house){
+            this.setState({
+                houses: nextProps.list_user_house
+            })
+        }
+      }
     async componentWillMount() {
-         this.props.showLoading();
+        this.props.showLoading();
         let data = await getUserHouse1();
-        
+
         console.log(data);
-        
+
         this.props.getUserHouse_(data);
         this.setState({
-            houses : this.props.list_user_house
+            houses: this.props.list_user_house
         })
         this.props.hideLoading();
 
     }
     render() {
-        console.log('store');
-        console.log(this.state.houses);
-        
+
         return (
 
             <View style={{ alignItems: 'center', paddingTop: 50, flexDirection: 'column' }}>
@@ -60,11 +67,11 @@ class HouseUser extends Component {
                     color="#841584"
                     accessibilityLabel="Tạo phòng mới của bạn"
                 />
-                <View style={{ paddingTop: 10}}> 
+                <View style={{ paddingTop: 10 }}>
                     <FlatList
                         data={this.state.houses}
-                        renderItem={({ item }) => 
-                           (<Item item = {item} navigation = {this.props.navigation}/>)
+                        renderItem={({ item }) =>
+                            (<Item item={item} navigation={this.props.navigation} />)
                         }
                         keyExtractor={(item, index) => index.toString()}
                         showsVerticalScrollIndicator={false}
@@ -98,14 +105,14 @@ const styles = StyleSheet.create({
 });
 const mapsStateToProps = (state) => {
     return {
-        list_user_house : state.houseReducer.list_user_house
+        list_user_house: state.houseReducer.list_user_house
     }
 }
 const mapsDispatchToProps = (dispatch) => {
     return {
         showLoading: () => { dispatch(show_loading()) },
         hideLoading: () => { dispatch(hide_loading()) },
-        getUserHouse_: (data) =>{ dispatch(getUserHouse(data))}
+        getUserHouse_: (data) => { dispatch(getUserHouse(data)) }
     }
 }
 export default connect(mapsStateToProps, mapsDispatchToProps)(HouseUser)

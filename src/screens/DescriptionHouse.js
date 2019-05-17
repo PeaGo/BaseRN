@@ -49,7 +49,7 @@ export default class DescriptionHouse extends Component {
             deposit: 0,
             electric_bill: 0,
             water_bill: 0,
-            check_bill: false,
+            check_bill: 0,
 
         }
     }
@@ -68,7 +68,7 @@ export default class DescriptionHouse extends Component {
                     title="Tạo phòng mới"
                     actionLeft={() => { this.props.navigation.goBack() }} />
                 <KeyboardAwareScrollView>
-                    <View>
+                    <View style={{marginLeft:10}}>
                         <Text>Loại phòng</Text>
                         <FlatList
                             ListEmptyComponent={<Text>Không có dữ liệu</Text>}
@@ -88,7 +88,7 @@ export default class DescriptionHouse extends Component {
                             }}
                         ></FlatList>
                     </View>
-                    <View>
+                    <View style={{marginLeft:10}}>
                         <Text>Địa chỉ</Text>
                         <TouchableOpacity style={styles.input_row} onPress={() => {
                             this.props.navigation.navigate('LocationHouseScreen', { action: (address, location) => this.action(address, location), address: this.state.address })
@@ -96,23 +96,23 @@ export default class DescriptionHouse extends Component {
                             <Text>{this.state.address == '' ? this.state.string : this.state.address}</Text>
                         </TouchableOpacity>
                     </View>
-                    <View>
+                    <View style={{marginLeft:10}}>
                         <Text>Địa chỉ chi tiết</Text>
                         <TextInput style={styles.input_row} placeholder={'Địa chỉ chi tiết phòng trọ'} value={this.state.address_detail} onChangeText={(address_detail) => this.setState({ address_detail })}></TextInput>
                     </View>
-                    <View>
+                    <View style={{marginLeft:10}}>
                         <Text>Số lượng phòng</Text>
                         <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.quantity_room} onChangeText={(quantity_room) => this.setState({ quantity_room })}></TextInput>
-                    </View>
-                    <View>
+                    </View >
+                    <View style={{marginLeft:10}}>
                         <Text>Sức chứa</Text>
                         <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.quantity_people} onChangeText={(quantity_people) => this.setState({ quantity_people })}></TextInput>
                     </View>
-                    <View>
+                    <View style={{marginLeft:10}}>
                         <Text>Diện tích phòng(m2)</Text>
                         <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.total_area} onChangeText={(total_area) => this.setState({ total_area })}></TextInput>
                     </View>
-                    <View>
+                    <View style={{marginLeft:10}}>
                         <Text>Giới tính</Text>
                         <FlatList
                             ListEmptyComponent={<Text>Không có dữ liệu</Text>}
@@ -132,26 +132,26 @@ export default class DescriptionHouse extends Component {
                             }}
                         ></FlatList>
                     </View>
-                    <View>
-                        <Text>Giá cho thuê/phòng</Text>
+                    <View style={{marginLeft:10}}>
+                        <Text>Giá cho thuê/phòng {Math.round(this.state.price/1000000 * 10) / 10} triệu/tháng</Text>
                         <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.price} onChangeText={(price) => this.setState({ price })}></TextInput>
                     </View>
-                    <View>
-                        <Text>Tiền cọc</Text>
+                    <View style={{marginLeft:10}}>
+                        <Text>Tiền cọc {Math.round(this.state.deposit/1000000 * 10) / 10} triệu/tháng</Text>
                         <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.deposit} onChangeText={(deposit) => this.setState({ deposit })}></TextInput>
-                    </View>
+                    </View >
                     <CheckBox
                         title='Điện nước giá dân'
-                        checked={this.state.check_bill}
-                        onPress={() => this.setState({ check_bill: !this.state.check_bill, electric_bill: 0, water_bill: 0 })}
+                        checked={this.state.check_bill==1?true:false}
+                        onPress={() => this.setState({ check_bill: this.state.check_bill==1?0:1, electric_bill: 0, water_bill: 0 })}
                     />
-                    {this.state.check_bill ? null :
+                    {this.state.check_bill == 1 ? null :
                         <View>
-                            <View>
+                            <View style={{marginLeft:10}}>
                                 <Text>Tiền điện/kw</Text>
                                 <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.electric_bill} onChangeText={(electric_bill) => this.setState({ electric_bill })}></TextInput>
                             </View>
-                            <View>
+                            <View style={{marginLeft:10}}>
                                 <Text>Tiền nước/m3</Text>
                                 <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.water_bill} onChangeText={(water_bill) => this.setState({ water_bill })}></TextInput>
                             </View>

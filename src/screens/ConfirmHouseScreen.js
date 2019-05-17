@@ -7,8 +7,11 @@ import { sizeFont, sizeHeight, sizeWidth } from '../helper/size.helper'
 import HeaderNav from '../components/headerNav'
 import { CheckBox } from 'react-native-elements'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { createHouse } from '../api/house'
-export default class ConfirmHouse extends Component {
+import { createHouse } from '../api/house';
+import { getUserHouse } from '../redux/actions/house';
+import { getUserHouse1 } from '../api/house';
+import { connect } from 'react-redux';
+class ConfirmHouse extends Component {
     constructor(props) {
         let param = props.navigation.getParam('inforHouse');
         // console.log('------',param)
@@ -30,8 +33,11 @@ export default class ConfirmHouse extends Component {
             description: this.state.description
         }
         let res = await createHouse(param).then(
-            this.props.navigation.navigate('HouseScreenUser')
-        );
+            console.log(await getUserHouse1()),
+            this.props.getUserHouse_(await getUserHouse1()).then(
+                this.props.navigation.navigate('HouseScreenUser')
+            ),
+        )
         
         // console.log(res);
 
@@ -52,19 +58,19 @@ export default class ConfirmHouse extends Component {
                         actionLeft={() => { this.props.navigation.goBack() }} />
                 </View>
                 <View>
-                    <View>
+                    <View style={{marginLeft:10}}>
                         <Text>Số điện thoại</Text>
                         <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.phone} onChangeText={(phone) => this.setState({ phone })}></TextInput>
                     </View>
                 </View>
                 <View>
-                    <View>
+                    <View style={{marginLeft:10}}>
                         <Text>Tiêu đề phòng</Text>
                         <TextInput style={styles.input_row}  multiline={true} numberOfLines={2} value={this.state.title} onChangeText={(title) => this.setState({ title})}></TextInput>
                     </View>
                 </View>
                 <View>
-                    <View>
+                    <View style={{marginLeft:10}}>
                         <Text>Mô tả phòng</Text>
                         <TextInput style={styles.input_row} multiline={true} numberOfLines={5} value={this.state.description} onChangeText={(description) => this.setState({ description })}></TextInput>
                     </View>
@@ -89,8 +95,16 @@ const styles = StyleSheet.create({
     },
 })
 
-const mapsDispatchToProps = (dispatch) => {
+const mapsStateToProps = (state) => {
     return {
-
+        list_user_house: state.houseReducer.list_user_house
     }
 }
+const mapsDispatchToProps = (dispatch) => {
+    return {
+        showLoading: () => { dispatch(show_loading()) },
+        hideLoading: () => { dispatch(hide_loading()) },
+        getUserHouse_: (data) => { dispatch(getUserHouse(data)) }
+    }
+}
+export default connect(mapsStateToProps, mapsDispatchToProps)(ConfirmHouse)

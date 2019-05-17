@@ -1,15 +1,14 @@
 import {createStackNavigator} from 'react-navigation'
-import Home from '../screens/HomeScreen'
-
-export const HomeStack = createStackNavigator(
+import HomeScreen from '../screens/HomeScreen'
+import LocationUserScreen from '../screens/LocationUserScreen'
+import DetailHouseSearch from '../screens/DetailHouseSearch'
+export const HomeStack = createStackNavigator (
     {
-        Home : {
-            screen : Home,
-           
-        }
+        HomeScreen : HomeScreen,
+        LocationUserScreen : LocationUserScreen,
+        DetailHouseSearch:DetailHouseSearch
     },
     {
-        headerMode: 'none'
+        headerMode : 'none'
     }
-
 );

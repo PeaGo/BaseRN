@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-    View, Text, TextInput, StyleSheet, TouchableOpacity
+    View, Text, TextInput, StyleSheet, TouchableOpacity,Alert
 } from 'react-native'
 import { STYLE_CONTAINER } from '../config/app.config'
 import { sizeFont, sizeHeight, sizeWidth } from '../helper/size.helper'
@@ -58,17 +58,32 @@ class Register extends Component {
         };
     }
     async _register() {
-        // this.props.showLoading();
+        this.props.showLoading();
         // goi api 
-        let res = await register(this.state);
+        let res = await register(this.state).then(
+            Alert.alert(
+                'Thông báo',
+                'Tạo tài khoản thành công',
+                [
+                 
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {text: 'OK', onPress: () => this.props.navigation.goBack()},
+                ],
+                {cancelable: false},
+              )
+        );
 
-        console.log(res);
+       
 
         // if (res.type == 1) {
         //     this.props.updateUserStatus(USER_STATUS_ACTION.AUTHOR_STATUS);
         //     await AsyncstorageHelper._storeData('userData', JSON.stringify(res));
         // }
-        // this.props.hideLoading();
+        this.props.hideLoading();
     }
     showAvatar = _ => {
         picker((source, data) => {

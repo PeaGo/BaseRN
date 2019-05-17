@@ -8,6 +8,7 @@ export const createHouse = async (data) => {
             ...data,
             created_by: userJson._id
         }
+        console.log('111',data)
         return RequsetHelper.post(BASE_URL_API + '/house/createhouse', data).then((res) => {
             console.log('----------------', res)
         }

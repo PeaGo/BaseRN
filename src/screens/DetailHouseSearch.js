@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-    View, Text, StyleSheet, Button, FlatList, Image,
+    View, Text, StyleSheet, Button, FlatList, Image,Linking
 } from 'react-native'
 import { STYLE_CONTAINER } from '../config/app.config'
 import { sizeFont, sizeHeight, sizeWidth } from '../helper/size.helper'
@@ -8,7 +8,8 @@ import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import HeaderNav from '../components/headerNav'
 import { BASE_URL_API } from '../config/app.config'
-class DetailHouse extends Component {
+import call from 'react-native-phone-call'
+class DetailHouseSearch extends Component {
     constructor(props) {
         let param = props.navigation.getParam('inforHouse');
         super(props);
@@ -20,7 +21,7 @@ class DetailHouse extends Component {
 
     render() {
         let data = this.state.inforHouse
-
+        console.log('--------data', data)
         return (
 
             <View>
@@ -40,6 +41,11 @@ class DetailHouse extends Component {
                             <Text>Số người: {data.quantity_people}/Giới tính: {data.type_sex}</Text>
                         </View>
                         <View style={{ marginBottom: 5 }}><Text style={styles.title}>{data.title}</Text></View>
+                        {/* <View style={{ flex: 1, flexDirection: 'row', marginBottom: 5 }}>
+                            <Text style={{ width: 120, textAlign: "center", marginLeft: 20 }}>Giá phòng <Text style={{ color: '#dc3545' }}>{Math.round(data.price / 1000000 * 10) / 10}triệu/tháng</Text></Text>
+                            <Text style={{ width: 70, textAlign: "center", marginLeft: 25 }}>Đặt cọc <Text style={{ color: '#dc3545' }}>{Math.round(data.deposit / 1000000 * 10) / 10}triệu</Text></Text>
+                            <Text style={{ width: 70, textAlign: "center", marginLeft: 25 }}>Diện tích <Text style={{ color: '#dc3545' }}>{data.total_area} m2</Text></Text>
+                        </View> */}
                         <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
                             <View style={{ width: 120, marginLeft: 20 }}>
                                 <Text >Giá phòng</Text>
@@ -67,7 +73,6 @@ class DetailHouse extends Component {
                             </View>
 
                         </View>
-
                     </View>
                     <View style={styles.padding_bottom}>
                         <View>
@@ -86,21 +91,29 @@ class DetailHouse extends Component {
                             />
                         </View>
                     </View>
+
                     <View style={styles.padding_bottom}>
                         <View>
                             <Text style={styles.tienich}>Mô tả phòng</Text>
-                            <View><Text>{this.state.inforHouse.description}</Text></View>
+                            <View style={{ margin: 10 }}><Text>{this.state.inforHouse.description}</Text></View>
                         </View>
                     </View>
                     <View style={styles.padding_bottom}>
                         <View>
                             <Text style={styles.tienich}>Liên hệ</Text>
                             <View style={{ margin: 10 }}>
-                                <Text><Text style={{ fontWeight: "bold" }}>Số điện thoại</Text>  : {this.state.inforHouse.phone}</Text>
+                                <Text><Text style={{ fontWeight: "bold" }}>Chủ nhà</Text> : {this.state.inforHouse.creaters[0].username}</Text>
+                                <Text><Text style={{ fontWeight: "bold" }}>Số điện thoại</Text>  : <Text  onPress={() => {
+                                       const args = {
+                                        number: this.state.inforHouse.phone, // String value with the number to call
+                                        prompt: false // Optional boolean property. Determines if the user should be prompt prior to the call 
+                                      }
+                                       
+                                      call(args).catch(console.error)
+                                    }}>{this.state.inforHouse.phone}</Text></Text>
                             </View>
                         </View>
                     </View>
-
                 </KeyboardAwareScrollView>
             </View >
         );
@@ -170,4 +183,4 @@ const mapsDispatchToProps = (dispatch) => {
         hideLoading: () => { dispatch(hide_loading()) },
     }
 }
-export default connect(mapsStateToProps, mapsDispatchToProps)(DetailHouse)
+export default connect(mapsStateToProps, mapsDispatchToProps)(DetailHouseSearch)

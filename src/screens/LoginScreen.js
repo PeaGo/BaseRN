@@ -37,7 +37,7 @@ class Login extends Component {
         //--  let res  = await login(userdata);
 
         //fake api call
-        // this.props.showLoading();
+        this.props.showLoading();
         let res = await login(this.state); 
         console.log(res);
         

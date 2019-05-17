@@ -2,7 +2,7 @@ import axios from "axios";
 import qs from "qs";
 
 const instance = axios.create({
-  timeout: 30000
+  timeout: 3000000
 });
 
 const handleError = error => {
