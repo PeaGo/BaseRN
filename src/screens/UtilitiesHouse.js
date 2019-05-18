@@ -15,8 +15,8 @@ const options = {
         skipBackup: true,
         path: 'images',
     },
-    maxWidth: 200,
-    maxHeight: 200,
+    maxWidth: 400,
+    maxHeight: 400,
 };
 
 /**
@@ -51,7 +51,7 @@ export default class UtilitiesHouse extends Component {
 
     showAvatar = _ => {
         ImagePicker.showImagePicker(options, (response) => {
-            console.log('Response = ', response);
+           
 
             if (response.didCancel) {
                 console.log('User cancelled image picker');
@@ -100,7 +100,7 @@ export default class UtilitiesHouse extends Component {
     }
     render() {
         let param = this.props.navigation.getParam('inforHouse');
-        console.log('----------', param);
+      
 
 
         return (
@@ -132,7 +132,7 @@ export default class UtilitiesHouse extends Component {
 
                 <View>
                     <FlatList
-                        style={{ marginTop: 30,marginBottom:10 }}
+                        style={{ marginTop: 30, marginBottom: 10 }}
                         data={this.state.utilities}
                         extraData={this.state.utilities_selected}
                         numColumns='3'
@@ -160,20 +160,25 @@ export default class UtilitiesHouse extends Component {
                 <View style={{ alignItems: 'center', flexDirection: 'column' }}>
                     <Button
                         onPress={() => {
-                            param.quantity_room = parseInt(param.quantity_room)
-                            param.total_area = parseInt(param.total_area)
-                            param.quantity_people = parseInt(param.quantity_people)
-                            param.price = parseInt(param.price)
-                            param.deposit = parseInt(param.deposit)
-                            param.electric_bill = parseInt(param.electric_bill)
-                            param.water_bill = parseInt(param.water_bill)
-                            param.check_bill = parseInt(param.check_bill)
-                            param = {
-                                ...param,
-                                utilities: this.state.utilities_selected,
-                                images: this.state.images
+                            if (this.state.images.length === 0) {
+                                alert('Vui lòng thêm ít nhất 1 ảnh')
                             }
-                            this.props.navigation.navigate('ConfirmHouse', { inforHouse: param })
+                            else {
+                                param.quantity_room = parseInt(param.quantity_room)
+                                param.total_area = parseInt(param.total_area)
+                                param.quantity_people = parseInt(param.quantity_people)
+                                param.price = parseInt(param.price)
+                                param.deposit = parseInt(param.deposit)
+                                param.electric_bill = parseInt(param.electric_bill)
+                                param.water_bill = parseInt(param.water_bill)
+                                param.check_bill = parseInt(param.check_bill)
+                                param = {
+                                    ...param,
+                                    utilities: this.state.utilities_selected,
+                                    images: this.state.images
+                                }
+                                this.props.navigation.navigate('ConfirmHouse', { inforHouse: param })
+                            }
                         }}
                         style={{ margin: 30 }}
                         title="Tiếp theo"
@@ -222,7 +227,7 @@ const styles = StyleSheet.create({
         margin: 15,
         alignSelf: 'center',
         borderRadius: 50,
-        color:"white",
+        color: "white",
         fontWeight: "bold"
     },
 

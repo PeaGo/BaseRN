@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-    View, Text, StyleSheet, Button, TouchableOpacity, TextInput, FlatList, Image,SafeAreaView
+    View, Text, StyleSheet, Button, TouchableOpacity, TextInput, FlatList, Image, SafeAreaView
 } from 'react-native'
 import { STYLE_CONTAINER } from '../config/app.config'
 import { sizeFont, sizeHeight, sizeWidth } from '../helper/size.helper'
@@ -13,7 +13,7 @@ import Slider from "react-native-slider";
 import { getUserSearch } from '../api/usersearchhouse'
 import { show_loading, hide_loading } from '../redux/actions/loading.action'
 import { getUserSearchHouse } from '../redux/actions/usersearchhouse'
-import { BASE_URL_API } from '../config/app.config'
+import { BASE_URL_API } from '../config/app.config';
 class CheckBoxItem extends Component {
     // constructor(props) {
     //     super(props)
@@ -49,7 +49,7 @@ class Item extends Component {
                 <Image source={{ uri: BASE_URL_API + '/' + item.image_path[0] }} style={styles.imageView} />
 
                 <View>
-                    <Text style={styles.textView}><Icon name={"home"}></Icon>  {item.title}</Text>
+                    <Text style={styles.textView}><Icon name={"home"}></Icon> {item.title}</Text>
                     <Text style={styles.textView}><Icon name={"dollar"}></Icon> Giá: {Math.round(item.price / 1000000 * 10) / 10} triệu/tháng</Text>
                     <Text style={styles.textView}><Icon name={"th-large"}></Icon> Diện tích: {item.total_area} m2</Text>
                     <Text style={styles.textView}><Icon name={"road"}></Icon> Khoảng cách: {Math.round(item.distance / 1000 * 10) / 10} km</Text>
@@ -73,6 +73,7 @@ class HomeScreen extends Component {
             filter_view: false,
             distance: 5,
             houses: [],
+
 
         }
     }
@@ -127,171 +128,177 @@ class HomeScreen extends Component {
         console.log('lat', this.props.user_info)
         return (
 
-            <View style={{ paddingBottom: 60 }}>
-                <KeyboardAwareScrollView>
-                    {this.state.filter_view ?
-                        <View style={{ paddingBottom: 60 }}>
-                            <HeaderNav iconLeft='arrow-left'
-                                title="Lọc tiêu chí phòng"
-                                actionLeft={() => { this.setState({ filter_view: false }) }} />
-                            <View style={{ marginLeft: 10,marginTop:10 }}>
-                                <Text>Loại phòng</Text>
-                                <FlatList
-                                    ListEmptyComponent={<Text>Không có dữ liệu</Text>}
-                                    data={type_room}
-                                    keyExtractor={(item, index) => index.toString()}
-                                    renderItem={({ item, index }) => {
-                                        return (
-                                            <CheckBoxItem
-                                                value={item.value}
-                                                type={this.state.type_room}
-                                                _reset={(type_room) => {
-                                                    this.setState({ type_room: type_room })
-                                                }}
-                                            />
+            <View style={{ paddingBottom: 10 }}>
 
-                                        )
-                                    }}
-                                ></FlatList>
+                {this.state.filter_view ?
+                    <View style={{ paddingBottom: 60 }}>
+                        <HeaderNav iconLeft='arrow-left'
+                            title="Lọc tiêu chí phòng"
+                            actionLeft={() => { this.setState({ filter_view: false }) }} />
+                        <View style={{ marginLeft: 10, marginTop: 10 }}>
+                            <Text>Loại phòng</Text>
+                            <FlatList
+                                ListEmptyComponent={<Text>Không có dữ liệu</Text>}
+                                data={type_room}
+                                keyExtractor={(item, index) => index.toString()}
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <CheckBoxItem
+                                            value={item.value}
+                                            type={this.state.type_room}
+                                            _reset={(type_room) => {
+                                                this.setState({ type_room: type_room })
+                                            }}
+                                        />
+
+                                    )
+                                }}
+                            ></FlatList>
+                        </View>
+                        <View style={{ width: '100%', marginLeft: 10, marginRight: 20 }}>
+                            <View style={styles.view_title_sort}>
+                                <Text>Giá phòng</Text>
                             </View>
-                            <View style={{ width: '100%', marginLeft: 10, marginRight: 20 }}>
-                                <View style={styles.view_title_sort}>
-                                    <Text>Giá phòng</Text>
-                                </View>
-                                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                                    <View style={{ width: 30 }}>
-                                        <Text >0</Text>
-
-                                    </View>
-                                    <Text style={{ width: 90, marginLeft: 40 }}>{Math.round(this.state.price * 10) / 10} triệu</Text>
-                                    <View style={{ width: 60, marginRight: 20 }}>
-                                        <Text >50 triệu</Text>
-
-                                    </View>
+                            <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                                <View style={{ width: 30 }}>
+                                    <Text >0</Text>
 
                                 </View>
-                                <View style={{ marginRight: 25 }}>
-                                    <Slider
-                                        minimumValue={0}
-                                        maximumValue={50}
-                                        value={this.state.price}
-                                        minimumTrackTintColor='#F05B36'
-                                        maximumTrackTintColor='#d3d3d3'
-                                        thumbTintColor='#F05B36'
-                                        onValueChange={(value) => this.setState({ price: value })}
-                                    />
+                                <Text style={{ width: 90, marginLeft: 40 }}>{Math.round(this.state.price * 10) / 10} triệu</Text>
+                                <View style={{ width: 60, marginRight: 20 }}>
+                                    <Text >50 triệu</Text>
 
                                 </View>
+
                             </View>
-                            <View style={{ width: '100%', marginLeft: 10, marginRight: 20 }}>
-                                <View style={styles.view_title_sort}>
-                                    <Text>Khoảng cách</Text>
-                                </View>
-                                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                                    <View style={{ width: 30 }}>
-                                        <Text >0</Text>
-
-                                    </View>
-                                    <Text style={{ width: 90, marginLeft: 40 }}>{Math.round(this.state.distance * 10) / 10} km</Text>
-                                    <View style={{ width: 60, marginRight: 20 }}>
-                                        <Text >10 km</Text>
-
-                                    </View>
-
-                                </View>
-                                <View style={{ marginRight: 25 }}>
-                                    <Slider
-                                        minimumValue={0}
-                                        maximumValue={10}
-                                        value={this.state.distance}
-                                        minimumTrackTintColor='#F05B36'
-                                        maximumTrackTintColor='#d3d3d3'
-                                        thumbTintColor='#F05B36'
-                                        onValueChange={(value) => this.setState({ distance: value })}
-                                    />
-
-                                </View>
-                            </View>
-                            <View style={{ width: '100%', marginLeft: 10, marginRight: 20 }}>
-                                <View style={styles.view_title_sort}>
-                                    <Text>Diện tích phòng</Text>
-                                </View>
-                                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                                    <View style={{ width: 30 }}>
-                                        <Text >0</Text>
-
-                                    </View>
-                                    <Text style={{ width: 90, marginLeft: 40 }}>{Math.round(this.state.total_area * 10) / 10} m2</Text>
-                                    <View style={{ width: 60, marginRight: 20 }}>
-                                        <Text >1000m2</Text>
-
-                                    </View>
-
-                                </View>
-                                <View style={{ marginRight: 25 }}>
-                                    <Slider
-                                        minimumValue={0}
-                                        maximumValue={1000}
-                                        value={this.state.total_area}
-                                        minimumTrackTintColor='#F05B36'
-                                        maximumTrackTintColor='#d3d3d3'
-                                        thumbTintColor='#F05B36'
-                                        onValueChange={(value) => this.setState({ total_area: value })}
-                                    />
-
-                                </View>
-                            </View>
-                            <View style={{ alignItems: 'center', flexDirection: 'column' }}>
-                                <Button
-                                    onPress={async () => {
-                                        this.props.showLoading();
-                                        let data_search = {
-                                            lat: this.state.lat,
-                                            lng: this.state.lng,
-                                            distance: this.state.distance,
-                                            price: this.state.price,
-                                            total_area: this.state.total_area,
-                                            type_room: this.state.type_room
-                                        }
-                                        let data = await getUserSearch(data_search);
-                                        this.props.getUserSearchHouse(data);
-                                        this.setState({
-                                            houses: this.props.list_user_search_house,
-                                            filter_view: false
-                                        })
-                                        this.props.hideLoading();
-
-                                    }}
-                                    style={{ margin: 30 }}
-                                    title="Áp dụng"
-                                    color="#F05B36"
+                            <View style={{ marginRight: 25 }}>
+                                <Slider
+                                    minimumValue={0}
+                                    maximumValue={50}
+                                    value={this.state.price}
+                                    minimumTrackTintColor='#F05B36'
+                                    maximumTrackTintColor='#d3d3d3'
+                                    thumbTintColor='#F05B36'
+                                    onValueChange={(value) => this.setState({ price: value })}
                                 />
+
                             </View>
                         </View>
-                        :
-                        <View>
-                            <SafeAreaView style={styles.container}>
-                                <TouchableOpacity style={styles.left}
-                                   
-                                >
-                                    <Text style={styles.text_title}>Tìm phòng</Text>
-                                </TouchableOpacity>
-                               
-                                <TouchableOpacity style={styles.right}
-                                  
-                                >
-                                    {
-                                            <View style={{
-                                                borderRadius: 30, backgroundColor: "white", justifyContent: 'center', alignItems: 'center',
-                                                flexDirection: 'row',
-                                            }}>
-                                                <Icon light name={'product-hunt'} size={sizeFont(6)} color={'#F8B21C'}></Icon>
-                                                <Text style={{ marginRight: 10 }}> {this.props.user_info.info_user.point}</Text>
-                                            </View>
+                        <View style={{ width: '100%', marginLeft: 10, marginRight: 20 }}>
+                            <View style={styles.view_title_sort}>
+                                <Text>Khoảng cách</Text>
+                            </View>
+                            <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                                <View style={{ width: 30 }}>
+                                    <Text >0</Text>
+
+                                </View>
+                                <Text style={{ width: 90, marginLeft: 40 }}>{Math.round(this.state.distance * 10) / 10} km</Text>
+                                <View style={{ width: 60, marginRight: 20 }}>
+                                    <Text >10 km</Text>
+
+                                </View>
+
+                            </View>
+                            <View style={{ marginRight: 25 }}>
+                                <Slider
+                                    minimumValue={0}
+                                    maximumValue={10}
+                                    value={this.state.distance}
+                                    minimumTrackTintColor='#F05B36'
+                                    maximumTrackTintColor='#d3d3d3'
+                                    thumbTintColor='#F05B36'
+                                    onValueChange={(value) => this.setState({ distance: value })}
+                                />
+
+                            </View>
+                        </View>
+                        <View style={{ width: '100%', marginLeft: 10, marginRight: 20 }}>
+                            <View style={styles.view_title_sort}>
+                                <Text>Diện tích phòng</Text>
+                            </View>
+                            <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                                <View style={{ width: 30 }}>
+                                    <Text >0</Text>
+
+                                </View>
+                                <Text style={{ width: 90, marginLeft: 40 }}>{Math.round(this.state.total_area * 10) / 10} m2</Text>
+                                <View style={{ width: 60, marginRight: 20 }}>
+                                    <Text >1000m2</Text>
+
+                                </View>
+
+                            </View>
+                            <View style={{ marginRight: 25 }}>
+                                <Slider
+                                    minimumValue={0}
+                                    maximumValue={1000}
+                                    value={this.state.total_area}
+                                    minimumTrackTintColor='#F05B36'
+                                    maximumTrackTintColor='#d3d3d3'
+                                    thumbTintColor='#F05B36'
+                                    onValueChange={(value) => this.setState({ total_area: value })}
+                                />
+
+                            </View>
+                        </View>
+                        <View style={{ alignItems: 'center', flexDirection: 'column' }}>
+                            <Button
+                                onPress={async () => {
+                                    this.props.showLoading();
+                                    let data_search = {
+                                        lat: this.state.lat,
+                                        lng: this.state.lng,
+                                        distance: this.state.distance,
+                                        price: this.state.price,
+                                        total_area: this.state.total_area,
+                                        type_room: this.state.type_room
                                     }
-                                </TouchableOpacity>
-                            </SafeAreaView>
-                            <View style={{ flex: 1, flexDirection: 'row', backgroundColor: "#F05B36" }}>
+                                    let data = await getUserSearch(data_search);
+                                    this.props.getUserSearchHouse(data);
+                                    this.setState({
+                                        houses: this.props.list_user_search_house,
+                                        filter_view: false
+                                    })
+                                    this.props.hideLoading();
+
+                                }}
+                                style={{ margin: 30 }}
+                                title="Áp dụng"
+                                color="#F05B36"
+                            />
+                        </View>
+                    </View>
+                    :
+                    <View>
+
+                        <SafeAreaView style={styles.container}>
+                            <TouchableOpacity style={styles.left}
+
+                            >
+                                <Text style={styles.text_title}>Tìm phòng</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.right}
+
+                            >
+                                {
+                                    <View style={{
+                                        borderRadius: 30, backgroundColor: "white", justifyContent: 'center', alignItems: 'center',
+                                        flexDirection: 'row',
+                                    }}>
+                                        <Icon light name={'product-hunt'} size={sizeFont(6)} color={'#F8B21C'}></Icon>
+                                        <Text style={{ marginRight: 10 }}> {this.props.user_info.info_user.point}</Text>
+                                    </View>
+                                }
+                            </TouchableOpacity>
+
+                        </SafeAreaView>
+                        <SafeAreaView style={{
+                            backgroundColor: "#F05B36", height: sizeHeight(6),
+                            width: sizeWidth(100),
+                        }}>
+                            <View style={{flex:1,flexDirection:"row"}}>
                                 <TouchableOpacity style={styles.input_row} onPress={() => {
                                     this.props.navigation.navigate('LocationUserScreen', { action: (address, location) => this.action(address, location), address: this.state.address })
                                 }}>
@@ -301,9 +308,10 @@ class HomeScreen extends Component {
                                     onPress={() => {
                                         this.setState({ filter_view: true })
                                     }}></Icon>
-
                             </View>
-                            <View style={{ paddingTop: 10 }}>
+                        </SafeAreaView>
+                        <KeyboardAwareScrollView >
+                            <View style={{ paddingTop: 10 ,paddingBottom:30}}>
                                 <FlatList
                                     data={this.state.houses}
                                     renderItem={({ item }) =>
@@ -313,9 +321,11 @@ class HomeScreen extends Component {
                                     showsVerticalScrollIndicator={false}
                                 />
                             </View>
-                        </View>
-                    }
-                </KeyboardAwareScrollView>
+                        </KeyboardAwareScrollView>
+
+                    </View>
+
+                }
             </View>
 
         );
@@ -335,7 +345,7 @@ const type_room = [
 
 const styles = StyleSheet.create({
     input_row: {
-        padding: 5,  borderRadius: 5, width: sizeWidth(80), marginLeft: 20, marginBottom:10,
+        padding: 5, borderRadius: 5, width: sizeWidth(80), marginLeft: 20, marginBottom: 10,
         backgroundColor: "#fe8668"
     },
     filter_row: {
@@ -370,14 +380,14 @@ const styles = StyleSheet.create({
         flex: 2,
         flexDirection: 'row',
         justifyContent: 'center',
-       
+
 
     },
     text_title: {
         fontSize: sizeFont(3),
         //color: `${PRIMARY_COLOR}`,
         fontWeight: 'normal',
-        color :"white"
+        color: "white"
     },
     left: {
         flex: 1,
@@ -386,8 +396,8 @@ const styles = StyleSheet.create({
     },
     right: {
         flex: 1,
-        justifyContent: 'center', 
-        alignItems:'flex-end',
+        justifyContent: 'center',
+        alignItems: 'flex-end',
         paddingRight: sizeWidth(4),
     }
 })

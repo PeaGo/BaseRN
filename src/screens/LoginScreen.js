@@ -40,10 +40,10 @@ class Login extends Component {
         if(this.state.email !== '' && this.state.password !== ''){
             this.props.showLoading();
             let res = await login(this.state); 
-            console.log(res);
+           
             
             if (res.token !== undefined && res.user !== null && res.user !== undefined && res.user !== {}) {
-                console.log('1');
+              
                 
                 this.props.updateUserStatus(USER_STATUS_ACTION.AUTHOR_STATUS);
                 await AsyncstorageHelper._storeData('userData', JSON.stringify(res.user));

@@ -15,7 +15,7 @@ class CheckBoxItem extends Component {
     //     }
     // }
     render() {
-        console.log(this.props);
+      
 
 
         return (
@@ -50,6 +50,7 @@ export default class DescriptionHouse extends Component {
             electric_bill: 0,
             water_bill: 0,
             check_bill: 0,
+            check_save: false,
 
         }
     }
@@ -61,14 +62,15 @@ export default class DescriptionHouse extends Component {
         })
     }
     render() {
+        let state = this.state
         return (
 
-            <View style={{paddingBottom: 60}}>
+            <View style={{ paddingBottom: 80 }}>
                 <HeaderNav iconLeft='arrow-left'
                     title="Tạo phòng mới"
                     actionLeft={() => { this.props.navigation.goBack() }} />
                 <KeyboardAwareScrollView>
-                    <View style={{marginLeft:10}}>
+                    <View style={{ marginLeft: 10, marginTop: 10 }}>
                         <Text>Loại phòng</Text>
                         <FlatList
                             ListEmptyComponent={<Text>Không có dữ liệu</Text>}
@@ -87,28 +89,32 @@ export default class DescriptionHouse extends Component {
                                 )
                             }}
                         ></FlatList>
+                        {this.state.type_room === "" && this.state.check_save ? <Text style={{ color: "red", padding: 2 }}>Vui lòng chọn loại phòng</Text> : <Text></Text>}
                     </View>
-                    <View style={{marginLeft:10}}>
+                    <View style={{ marginLeft: 10 }}>
                         <Text>Địa chỉ</Text>
                         <TouchableOpacity style={styles.input_row} onPress={() => {
                             this.props.navigation.navigate('LocationHouseScreen', { action: (address, location) => this.action(address, location), address: this.state.address })
                         }}>
                             <Text>{this.state.address == '' ? this.state.string : this.state.address}</Text>
                         </TouchableOpacity>
+                        {this.state.address_detail === "" && this.state.check_save? <Text style={{ color: "red", padding: 2 }}>Vui lòng nhập địa chỉ phòng</Text> : <Text></Text>}
                     </View>
-                    <View style={{marginLeft:10}}>
+                    <View style={{ marginLeft: 10 }}>
                         <Text>Địa chỉ chi tiết</Text>
                         <TextInput style={styles.input_row} placeholder={'Địa chỉ chi tiết phòng trọ'} value={this.state.address_detail} onChangeText={(address_detail) => this.setState({ address_detail })}></TextInput>
+
                     </View>
-                    <View style={{marginLeft:10}}>
+                    <View style={{ marginLeft: 10 }}>
                         <Text>Sức chứa</Text>
                         <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.quantity_people} onChangeText={(quantity_people) => this.setState({ quantity_people })}></TextInput>
                     </View>
-                    <View style={{marginLeft:10}}>
+                    <View style={{ marginLeft: 10 }}>
                         <Text>Diện tích phòng(m2)</Text>
                         <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.total_area} onChangeText={(total_area) => this.setState({ total_area })}></TextInput>
+                        {this.state.total_area === 0 && this.state.check_save? <Text style={{ color: "red", padding: 2 }}>Vui lòng nhập diện tích phòng</Text> : <Text></Text>}
                     </View>
-                    <View style={{marginLeft:10}}>
+                    <View style={{ marginLeft: 10 }}>
                         <Text>Giới tính</Text>
                         <FlatList
                             ListEmptyComponent={<Text>Không có dữ liệu</Text>}
@@ -128,26 +134,27 @@ export default class DescriptionHouse extends Component {
                             }}
                         ></FlatList>
                     </View>
-                    <View style={{marginLeft:10}}>
-                        <Text>Giá cho thuê/phòng {Math.round(this.state.price/1000000 * 10) / 10} triệu/tháng</Text>
+                    <View style={{ marginLeft: 10 }}>
+                        <Text>Giá cho thuê/phòng {Math.round(this.state.price / 1000000 * 10) / 10} triệu/tháng</Text>
                         <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.price} onChangeText={(price) => this.setState({ price })}></TextInput>
+                        {this.state.price === 0 && this.state.check_save? <Text style={{ color: "red", padding: 2 }}>Vui lòng nhập giá phòng</Text> : <Text></Text>}
                     </View>
-                    <View style={{marginLeft:10}}>
-                        <Text>Tiền cọc {Math.round(this.state.deposit/1000000 * 10) / 10} triệu/tháng</Text>
+                    <View style={{ marginLeft: 10 }}>
+                        <Text>Tiền cọc {Math.round(this.state.deposit / 1000000 * 10) / 10} triệu/tháng</Text>
                         <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.deposit} onChangeText={(deposit) => this.setState({ deposit })}></TextInput>
                     </View >
                     <CheckBox
                         title='Điện nước giá dân'
-                        checked={this.state.check_bill==1?true:false}
-                        onPress={() => this.setState({ check_bill: this.state.check_bill==1?0:1, electric_bill: 0, water_bill: 0 })}
+                        checked={this.state.check_bill == 1 ? true : false}
+                        onPress={() => this.setState({ check_bill: this.state.check_bill == 1 ? 0 : 1, electric_bill: 0, water_bill: 0 })}
                     />
                     {this.state.check_bill == 1 ? null :
                         <View>
-                            <View style={{marginLeft:10}}>
+                            <View style={{ marginLeft: 10 }}>
                                 <Text>Tiền điện/kw</Text>
                                 <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.electric_bill} onChangeText={(electric_bill) => this.setState({ electric_bill })}></TextInput>
                             </View>
-                            <View style={{marginLeft:10}}>
+                            <View style={{ marginLeft: 10 }}>
                                 <Text>Tiền nước/m3</Text>
                                 <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.water_bill} onChangeText={(water_bill) => this.setState({ water_bill })}></TextInput>
                             </View>
@@ -155,7 +162,15 @@ export default class DescriptionHouse extends Component {
                     <View style={{ alignItems: 'center', flexDirection: 'column' }}>
                         <Button
                             onPress={() => {
-                                this.props.navigation.navigate('UtilitiesHouse', { inforHouse: this.state })
+                                if(state.total_area === 0 || state.type_room === "" || state.address_detail === "" || state.price === 0){
+                                    this.setState({check_save : true})
+                                    alert("Vui lòng nhập đủ các thông tin bắt buộc")
+                                }
+                                else{
+                                    this.setState({check_save : false})
+                                    this.props.navigation.navigate('UtilitiesHouse', { inforHouse: this.state })
+                                }
+                                
                             }}
                             title="Tiếp theo"
                             color="#F05B36"
@@ -188,7 +203,7 @@ const type_sex = [
 ]
 const styles = StyleSheet.create({
     input_row: {
-        margin: 20, padding: 10, borderWidth: 1, borderRadius: 5
+        margin: 10, padding: 5, borderWidth: 1, borderRadius: 5
     },
 })
 

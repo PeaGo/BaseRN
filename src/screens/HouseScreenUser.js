@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { BASE_URL_API } from '../config/app.config';
 import HeaderNav from '../components/headerNav';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 class Item extends Component {
     render() {
         const { item, navigation } = this.props;
@@ -62,29 +63,31 @@ class HouseUser extends Component {
             <View>
                 <HeaderNav iconLeft='arrow-left'
                     title="Danh sách phòng của bạn"
-                   />
-                <View style={{ alignItems: 'center', flexDirection: 'column',padding:10 }}>
+                />
+                <KeyboardAwareScrollView>
+                    <View style={{ alignItems: 'center', flexDirection: 'column', padding: 10,paddingBottom: 60 }}>
 
-                    <Button
-                       
-                        onPress={() => {
-                            this.props.navigation.navigate('DescriptionHouse')
-                        }}
-                        title="Tạo phòng mới"
-                        color="#F05B36"
-                        accessibilityLabel="Tạo phòng mới của bạn"
-                    />
-                    <View style={{ paddingTop: 10 }}>
-                        <FlatList
-                            data={this.state.houses}
-                            renderItem={({ item }) =>
-                                (<Item item={item} navigation={this.props.navigation} />)
-                            }
-                            keyExtractor={(item, index) => index.toString()}
-                            showsVerticalScrollIndicator={false}
+                        <Button
+
+                            onPress={() => {
+                                this.props.navigation.navigate('DescriptionHouse')
+                            }}
+                            title="Tạo phòng mới"
+                            color="#F05B36"
+                            accessibilityLabel="Tạo phòng mới của bạn"
                         />
+                        <View style={{ paddingTop: 10 }}>
+                            <FlatList
+                                data={this.state.houses}
+                                renderItem={({ item }) =>
+                                    (<Item item={item} navigation={this.props.navigation} />)
+                                }
+                                keyExtractor={(item, index) => index.toString()}
+                                showsVerticalScrollIndicator={false}
+                            />
+                        </View>
                     </View>
-                </View>
+                </KeyboardAwareScrollView>
             </View>
         );
     }
