@@ -177,7 +177,7 @@ export default class UtilitiesHouse extends Component {
                         }}
                         style={{ margin: 30 }}
                         title="Tiếp theo"
-                        color="#841584"
+                        color="#F05B36"
                     />
                 </View>
             </KeyboardAwareScrollView>
@@ -217,11 +217,13 @@ const styles = StyleSheet.create({
     },
     textput: {
         textAlign: 'center',
-        backgroundColor: 'blue',
+        backgroundColor: '#F05B36',
         width: 20,
         margin: 15,
         alignSelf: 'center',
         borderRadius: 50,
+        color:"white",
+        fontWeight: "bold"
     },
 
 })

@@ -64,7 +64,7 @@ class HouseUser extends Component {
                         this.props.navigation.navigate('DescriptionHouse')
                     }}
                     title="Tạo Phòng"
-                    color="#841584"
+                    color="#F05B36"
                     accessibilityLabel="Tạo phòng mới của bạn"
                 />
                 <View style={{ paddingTop: 10 }}>

@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import {
-    View, Text, StyleSheet, Button, TouchableOpacity, TextInput, FlatList, Image
+    View, Text, StyleSheet, Button, TouchableOpacity, TextInput, FlatList, Image,SafeAreaView
 } from 'react-native'
 import { STYLE_CONTAINER } from '../config/app.config'
 import { sizeFont, sizeHeight, sizeWidth } from '../helper/size.helper'
 import HeaderNav from '../components/headerNav'
 import { CheckBox } from 'react-native-elements'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import FontAwesome5Pro from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import Slider from "react-native-slider";
 import { getUserSearch } from '../api/usersearchhouse'
@@ -103,7 +103,7 @@ class HomeScreen extends Component {
     }
     action(address, location) {
         this.setState({ address, location }, () => {
-            this.setState({ address_detail: this.state.address },async () => {
+            this.setState({ address_detail: this.state.address }, async () => {
                 this.setState({ lat: location.lat, lng: location.lng })
                 this.props.showLoading();
                 let data_search = {
@@ -124,7 +124,7 @@ class HomeScreen extends Component {
         })
     }
     render() {
-        console.log('lat', this.state.lat)
+        console.log('lat', this.props.user_info)
         return (
 
             <View style={{ paddingBottom: 60 }}>
@@ -132,9 +132,9 @@ class HomeScreen extends Component {
                     {this.state.filter_view ?
                         <View style={{ paddingBottom: 60 }}>
                             <HeaderNav iconLeft='arrow-left'
-                                title="Tạo phòng mới"
+                                title="Lọc tiêu chí phòng"
                                 actionLeft={() => { this.setState({ filter_view: false }) }} />
-                            <View style={{ marginLeft: 10 }}>
+                            <View style={{ marginLeft: 10,marginTop:10 }}>
                                 <Text>Loại phòng</Text>
                                 <FlatList
                                     ListEmptyComponent={<Text>Không có dữ liệu</Text>}
@@ -175,9 +175,9 @@ class HomeScreen extends Component {
                                         minimumValue={0}
                                         maximumValue={50}
                                         value={this.state.price}
-                                        minimumTrackTintColor='#1fb28a'
+                                        minimumTrackTintColor='#F05B36'
                                         maximumTrackTintColor='#d3d3d3'
-                                        thumbTintColor='#1a9274'
+                                        thumbTintColor='#F05B36'
                                         onValueChange={(value) => this.setState({ price: value })}
                                     />
 
@@ -204,9 +204,9 @@ class HomeScreen extends Component {
                                         minimumValue={0}
                                         maximumValue={10}
                                         value={this.state.distance}
-                                        minimumTrackTintColor='#1fb28a'
+                                        minimumTrackTintColor='#F05B36'
                                         maximumTrackTintColor='#d3d3d3'
-                                        thumbTintColor='#1a9274'
+                                        thumbTintColor='#F05B36'
                                         onValueChange={(value) => this.setState({ distance: value })}
                                     />
 
@@ -233,9 +233,9 @@ class HomeScreen extends Component {
                                         minimumValue={0}
                                         maximumValue={1000}
                                         value={this.state.total_area}
-                                        minimumTrackTintColor='#1fb28a'
+                                        minimumTrackTintColor='#F05B36'
                                         maximumTrackTintColor='#d3d3d3'
-                                        thumbTintColor='#1a9274'
+                                        thumbTintColor='#F05B36'
                                         onValueChange={(value) => this.setState({ total_area: value })}
                                     />
 
@@ -264,22 +264,43 @@ class HomeScreen extends Component {
                                     }}
                                     style={{ margin: 30 }}
                                     title="Áp dụng"
-                                    color="#841584"
+                                    color="#F05B36"
                                 />
                             </View>
                         </View>
                         :
                         <View>
-                            <View style={{ flex: 1, flexDirection: 'row' }}>
+                            <SafeAreaView style={styles.container}>
+                                <TouchableOpacity style={styles.left}
+                                   
+                                >
+                                    <Text style={styles.text_title}>Tìm phòng</Text>
+                                </TouchableOpacity>
+                               
+                                <TouchableOpacity style={styles.right}
+                                  
+                                >
+                                    {
+                                            <View style={{
+                                                borderRadius: 30, backgroundColor: "white", justifyContent: 'center', alignItems: 'center',
+                                                flexDirection: 'row',
+                                            }}>
+                                                <Icon light name={'product-hunt'} size={sizeFont(6)} color={'#F8B21C'}></Icon>
+                                                <Text style={{ marginRight: 10 }}> {this.props.user_info.info_user.point}</Text>
+                                            </View>
+                                    }
+                                </TouchableOpacity>
+                            </SafeAreaView>
+                            <View style={{ flex: 1, flexDirection: 'row', backgroundColor: "#F05B36" }}>
                                 <TouchableOpacity style={styles.input_row} onPress={() => {
                                     this.props.navigation.navigate('LocationUserScreen', { action: (address, location) => this.action(address, location), address: this.state.address })
                                 }}>
-                                    <Text>{this.state.address == '' ? this.state.string : this.state.address}</Text>
+                                    <Text style={{ color: "white" }}>{this.state.address == '' ? this.state.string : this.state.address}</Text>
                                 </TouchableOpacity>
-                                <FontAwesome5Pro style={styles.filter_row} name={'sliders'} size={25} color={'gray'}
+                                <Icon style={styles.filter_row} name={'sliders'} size={25} color={'white'}
                                     onPress={() => {
                                         this.setState({ filter_view: true })
-                                    }}></FontAwesome5Pro>
+                                    }}></Icon>
 
                             </View>
                             <View style={{ paddingTop: 10 }}>
@@ -314,10 +335,11 @@ const type_room = [
 
 const styles = StyleSheet.create({
     input_row: {
-        marginTop: 20, padding: 10, borderWidth: 1, borderRadius: 5, width: sizeWidth(80), marginLeft: 20, marginBottom: 20
+        padding: 5,  borderRadius: 5, width: sizeWidth(80), marginLeft: 20, marginBottom:10,
+        backgroundColor: "#fe8668"
     },
     filter_row: {
-        marginTop: 20, padding: 10, width: sizeWidth(10), marginLeft: 5, marginBottom: 20
+        padding: 5, width: sizeWidth(10), marginLeft: 5, marginBottom: 10
     },
     imageView: {
 
@@ -335,11 +357,44 @@ const styles = StyleSheet.create({
         padding: 2,
         color: '#000'
 
+    },
+    container: {
+        backgroundColor: '#F05B36',
+        height: sizeHeight(5),
+        width: sizeWidth(100),
+        flexDirection: 'row',
+        alignItems: 'center',
+
+    },
+    title: {
+        flex: 2,
+        flexDirection: 'row',
+        justifyContent: 'center',
+       
+
+    },
+    text_title: {
+        fontSize: sizeFont(3),
+        //color: `${PRIMARY_COLOR}`,
+        fontWeight: 'normal',
+        color :"white"
+    },
+    left: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        paddingLeft: sizeWidth(4),
+    },
+    right: {
+        flex: 1,
+        justifyContent: 'center', 
+        alignItems:'flex-end',
+        paddingRight: sizeWidth(4),
     }
 })
 const mapsStateToProps = (state) => {
     return {
-        list_user_search_house: state.usersearchhouseReducer.list_user_search_house
+        list_user_search_house: state.usersearchhouseReducer.list_user_search_house,
+        user_info: state.userInfo
     }
 }
 const mapsDispatchToProps = (dispatch) => {

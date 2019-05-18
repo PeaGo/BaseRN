@@ -8,7 +8,7 @@ import AppNavigation from './navigation/index'
 import LoadingView from './components/loading'
 import Login from './navigation/LoginStack'
 import AsyncstorageHelper from './helper/asyncstorage.helper'
-import { setUserStatus, USER_STATUS_ACTION } from './redux/actions/userStatus.action'
+import { setUserStatus, USER_STATUS_ACTION ,userLogin} from './redux/actions/userStatus.action'
 import { show_loading, hide_loading } from './redux/actions/loading.action'
 
 class Main extends Component {
@@ -21,7 +21,9 @@ class Main extends Component {
             
             if (userJson != null) {
                 if (userJson._id) {
+                    console.log('----')
                     this.props.updateUserStatus(USER_STATUS_ACTION.AUTHOR_STATUS);
+                    this.props.userLogin(userJson)
                 }
             }
         })
@@ -50,8 +52,10 @@ const mapsStateToProps = (state) => {
 const mapsDispatchToProps = (disptach) => {
     return {
         updateUserStatus: (status) => { disptach(setUserStatus(status)) },
+        userLogin: (data) => { disptach(userLogin(data)) },
         showLoading : () => {disptach(show_loading())},
-        hideLoading : () => {disptach(hide_loading())}
+        hideLoading : () => {disptach(hide_loading())},
+
     }
 }
 export default connect(mapsStateToProps, mapsDispatchToProps)(Main)

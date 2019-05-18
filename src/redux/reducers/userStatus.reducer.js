@@ -2,7 +2,8 @@ import {USER_STATUS_ACTION} from '../actions/userStatus.action'
 
 
 const defaultState = {
-    userStatus : USER_STATUS_ACTION.LOGIN_STATUS
+    userStatus : USER_STATUS_ACTION.LOGIN_STATUS,
+ 
 }
 
 export default userStatusReducer = (state = defaultState, action) => {
@@ -12,6 +13,7 @@ export default userStatusReducer = (state = defaultState, action) => {
                 userStatus : USER_STATUS_ACTION.AUTHOR_STATUS
             }
         }
+        
         default : return state
     }
 }

@@ -8,7 +8,7 @@ import { show_loading, hide_loading } from '../redux/actions/loading.action'
 import { connect } from 'react-redux'
 import { login } from '../api/auth.api'
 import { USER_STATUS_ACTION } from '../redux/actions/userStatus.action'
-import { setUserStatus } from '../redux/actions/userStatus.action'
+import { setUserStatus ,userLogin} from '../redux/actions/userStatus.action'
 import AsyncstorageHelper from '../helper/asyncstorage.helper'
 import RequestHelper from '../helper/request.helper';
 
@@ -37,32 +37,39 @@ class Login extends Component {
         //--  let res  = await login(userdata);
 
         //fake api call
-        this.props.showLoading();
-        let res = await login(this.state); 
-        console.log(res);
-        
-        if (res.token !== undefined && res.user !== null && res.user !== undefined && res.user !== {}) {
-            console.log('1');
+        if(this.state.email !== '' && this.state.password !== ''){
+            this.props.showLoading();
+            let res = await login(this.state); 
+            console.log(res);
             
-            this.props.updateUserStatus(USER_STATUS_ACTION.AUTHOR_STATUS);
-            await AsyncstorageHelper._storeData('userData', JSON.stringify(res.user));
-        }
-        else{
-            if(res.message){
-                alert(res.message)
+            if (res.token !== undefined && res.user !== null && res.user !== undefined && res.user !== {}) {
+                console.log('1');
+                
+                this.props.updateUserStatus(USER_STATUS_ACTION.AUTHOR_STATUS);
+                await AsyncstorageHelper._storeData('userData', JSON.stringify(res.user));
+                this.props.userLogin(res.user)
             }
             else{
-                alert('Vui lòng bạn nhập đúng tài khoản và mật khẩu')
+                if(res.message){
+                    alert(res.message)
+                }
+                else{
+                    alert('Vui lòng bạn nhập đúng tài khoản và mật khẩu')
+                }
+                
             }
-            
+            this.props.hideLoading();
         }
-        this.props.hideLoading();
+        else{
+            alert('Vui lòng bạn nhập đầy đủ tài khoản và mật khẩu')
+        }
+        
     }
     render() {
         return (
             <View style={STYLE_CONTAINER}>
                 <View style={styles.head}>
-                    <Text style={{ fontWeight: 'bold', color: 'green', fontSize: sizeWidth(10) }}>Login</Text>
+                    <Text style={{ fontWeight: 'bold', color: '#F05B36', fontSize: sizeWidth(10) }}>Login</Text>
                 </View>
                 <View style={styles.input_container}>
                     <View style={styles.input_row}>
@@ -75,7 +82,7 @@ class Login extends Component {
                     </View>
                     <TouchableOpacity style={[styles.input_row,
                     {
-                        backgroundColor: 'red', marginLeft: sizeWidth(10), marginRight: sizeWidth(10),
+                        backgroundColor: '#F05B36', marginLeft: sizeWidth(10), marginRight: sizeWidth(10),
                         paddingTop: sizeHeight(1.5), paddingBottom: sizeHeight(1.5), borderRadius: 5
 
                     }]}
@@ -83,7 +90,7 @@ class Login extends Component {
                         this._login();
                     }}
                     >
-                        <Text> Đăng nhập </Text>
+                        <Text style={{color:"white"}}> Đăng nhập </Text>
                     </TouchableOpacity>
 
                     <View style={styles.bot_container}>
@@ -148,7 +155,8 @@ const mapsDispatchToProps = (dispatch) => {
     return {
         showLoading: () => { dispatch(show_loading()) },
         hideLoading: () => { dispatch(hide_loading()) },
-        updateUserStatus : (status) => {dispatch(setUserStatus(status))}
+        updateUserStatus : (status) => {dispatch(setUserStatus(status))},
+        userLogin : (data) => {dispatch(userLogin(data))}
     }
 }
 export default connect(null, mapsDispatchToProps)(Login)

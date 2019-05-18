@@ -101,7 +101,7 @@ class Register extends Component {
                     title={'Đăng ký'}
                 />
                 <View style={styles.head}>
-                    <Text style={{ fontWeight: 'bold', color: 'green', fontSize: sizeWidth(10) }}>Register</Text>
+                    <Text style={{ fontWeight: 'bold', color: '#F05B36', fontSize: sizeWidth(10) }}>Register</Text>
                 </View>
                 <View style={styles.avatar_container}>
                 <Avatar
@@ -134,7 +134,7 @@ class Register extends Component {
                     </View>
                     <TouchableOpacity style={[styles.input_row,
                     {
-                        backgroundColor: 'red', marginLeft: sizeWidth(10), marginRight: sizeWidth(10),
+                        backgroundColor: '#F05B36', marginLeft: sizeWidth(10), marginRight: sizeWidth(10),
                         paddingTop: sizeHeight(1.5), paddingBottom: sizeHeight(1.5), borderRadius: 5
 
                     }]}
@@ -142,7 +142,7 @@ class Register extends Component {
                             this._register();
                         }}
                     >
-                        <Text> Đăng ký </Text>
+                        <Text color={{color:"white"}}> Đăng ký </Text>
                     </TouchableOpacity>
 
                 </View>

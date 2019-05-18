@@ -81,7 +81,7 @@ class ConfirmHouse extends Component {
                             this._createHouse();
                         }}
                         title="Tạo phòng"
-                        color="#841584"
+                        color="#F05B36"
                     />
                 </View>
             </KeyboardAwareScrollView>

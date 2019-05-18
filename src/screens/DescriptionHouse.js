@@ -162,7 +162,7 @@ export default class DescriptionHouse extends Component {
                                 this.props.navigation.navigate('UtilitiesHouse', { inforHouse: this.state })
                             }}
                             title="Tiếp theo"
-                            color="#841584"
+                            color="#F05B36"
                         />
                     </View>
                 </KeyboardAwareScrollView>

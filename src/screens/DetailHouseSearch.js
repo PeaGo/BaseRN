@@ -83,7 +83,7 @@ class DetailHouseSearch extends Component {
                                 numColumns='3'
                                 renderItem={({ item, index }) => {
                                     return (
-                                        <View style={styles.tienichItem}><Text >{item}</Text></View>
+                                        <View style={styles.tienichItem}><Text style={{color:"white"}}>{item}</Text></View>
                                     )
                                 }}
                                 keyExtractor={(item, index) => item}
@@ -164,10 +164,10 @@ const styles = StyleSheet.create({
         width: 120,
         height: 30,
         padding: 5,
-
+        alignItems:"center",
         borderRadius: 20,
         margin: 2,
-        backgroundColor: '#f5fcff',
+        backgroundColor: '#F05B36',
 
     }
 
