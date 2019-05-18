@@ -25,6 +25,7 @@ class Item extends Component {
                     <Text style={styles.textView}><Icon name={"home"}></Icon> {item.title}</Text>
                     <Text style={styles.textView}><Icon name={"dollar"}></Icon> Giá: {Math.round(item.price / 1000000 * 10) / 10} triệu/tháng</Text>
                     <Text style={styles.textView}><Icon name={"th-large"}></Icon> Diện tích: {item.total_area} m2</Text>
+                    {item.state_pin===1?<Icon name={"flag"}>Bài viết được ghim</Icon>:<View></View>}
                 </View>
             </TouchableOpacity>
         )
