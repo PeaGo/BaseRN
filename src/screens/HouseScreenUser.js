@@ -9,7 +9,8 @@ import { show_loading, hide_loading } from '../redux/actions/loading.action'
 import { getUserHouse } from '../redux/actions/house'
 import { connect } from 'react-redux';
 import { BASE_URL_API } from '../config/app.config';
-import HeaderNav from '../components/headerNav'
+import HeaderNav from '../components/headerNav';
+import Icon from 'react-native-vector-icons/FontAwesome';
 class Item extends Component {
     render() {
         const { item, navigation } = this.props;

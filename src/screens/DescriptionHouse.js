@@ -101,10 +101,6 @@ export default class DescriptionHouse extends Component {
                         <TextInput style={styles.input_row} placeholder={'Địa chỉ chi tiết phòng trọ'} value={this.state.address_detail} onChangeText={(address_detail) => this.setState({ address_detail })}></TextInput>
                     </View>
                     <View style={{marginLeft:10}}>
-                        <Text>Số lượng phòng</Text>
-                        <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.quantity_room} onChangeText={(quantity_room) => this.setState({ quantity_room })}></TextInput>
-                    </View >
-                    <View style={{marginLeft:10}}>
                         <Text>Sức chứa</Text>
                         <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.quantity_people} onChangeText={(quantity_people) => this.setState({ quantity_people })}></TextInput>
                     </View>
