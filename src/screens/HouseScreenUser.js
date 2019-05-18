@@ -20,9 +20,9 @@ class Item extends Component {
                 <Image source={{ uri: BASE_URL_API + '/' + item.image_path[0] }} style={styles.imageView} />
 
                 <View>
-                    <Text style={styles.textView}>{item.title}</Text>
-                    <Text style={styles.textView}>Giá: {Math.round(item.price / 1000000 * 10) / 10} triệu/tháng</Text>
-                    <Text style={styles.textView}>Diện tích: {item.total_area} m2</Text>
+                    <Text style={styles.textView}><Icon name={"home"}></Icon> {item.title}</Text>
+                    <Text style={styles.textView}><Icon name={"dollar"}></Icon> Giá: {Math.round(item.price / 1000000 * 10) / 10} triệu/tháng</Text>
+                    <Text style={styles.textView}><Icon name={"th-large"}></Icon> Diện tích: {item.total_area} m2</Text>
                 </View>
             </TouchableOpacity>
         )
