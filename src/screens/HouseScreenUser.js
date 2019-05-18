@@ -8,7 +8,8 @@ import { getUserHouse1 } from '../api/house'
 import { show_loading, hide_loading } from '../redux/actions/loading.action'
 import { getUserHouse } from '../redux/actions/house'
 import { connect } from 'react-redux';
-import { BASE_URL_API } from '../config/app.config'
+import { BASE_URL_API } from '../config/app.config';
+import HeaderNav from '../components/headerNav'
 class Item extends Component {
     render() {
         const { item, navigation } = this.props;
@@ -20,7 +21,7 @@ class Item extends Component {
 
                 <View>
                     <Text style={styles.textView}>{item.title}</Text>
-                    <Text style={styles.textView}>Giá: {Math.round(item.price/1000000 * 10) / 10} triệu/tháng</Text>
+                    <Text style={styles.textView}>Giá: {Math.round(item.price / 1000000 * 10) / 10} triệu/tháng</Text>
                     <Text style={styles.textView}>Diện tích: {item.total_area} m2</Text>
                 </View>
             </TouchableOpacity>
@@ -34,13 +35,13 @@ class HouseUser extends Component {
             houses: []
         };
     }
-    componentWillReceiveProps(nextProps){
-        if(nextProps.list_user_house!==this.props.list_user_house){
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.list_user_house !== this.props.list_user_house) {
             this.setState({
                 houses: nextProps.list_user_house
             })
         }
-      }
+    }
     async componentWillMount() {
         this.props.showLoading();
         let data = await getUserHouse1();
@@ -57,25 +58,31 @@ class HouseUser extends Component {
     render() {
 
         return (
+            <View>
+                <HeaderNav iconLeft='arrow-left'
+                    title="Danh sách phòng của bạn"
+                   />
+                <View style={{ alignItems: 'center', flexDirection: 'column',padding:10 }}>
 
-            <View style={{ alignItems: 'center', paddingTop: 50, flexDirection: 'column' }}>
-                <Button
-                    onPress={() => {
-                        this.props.navigation.navigate('DescriptionHouse')
-                    }}
-                    title="Tạo Phòng"
-                    color="#F05B36"
-                    accessibilityLabel="Tạo phòng mới của bạn"
-                />
-                <View style={{ paddingTop: 10 }}>
-                    <FlatList
-                        data={this.state.houses}
-                        renderItem={({ item }) =>
-                            (<Item item={item} navigation={this.props.navigation} />)
-                        }
-                        keyExtractor={(item, index) => index.toString()}
-                        showsVerticalScrollIndicator={false}
+                    <Button
+                       
+                        onPress={() => {
+                            this.props.navigation.navigate('DescriptionHouse')
+                        }}
+                        title="Tạo phòng mới"
+                        color="#F05B36"
+                        accessibilityLabel="Tạo phòng mới của bạn"
                     />
+                    <View style={{ paddingTop: 10 }}>
+                        <FlatList
+                            data={this.state.houses}
+                            renderItem={({ item }) =>
+                                (<Item item={item} navigation={this.props.navigation} />)
+                            }
+                            keyExtractor={(item, index) => index.toString()}
+                            showsVerticalScrollIndicator={false}
+                        />
+                    </View>
                 </View>
             </View>
         );

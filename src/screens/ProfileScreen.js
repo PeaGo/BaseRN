@@ -19,15 +19,15 @@ class ItemMenu extends Component {
                 }}>
                     <View style={styles.container_item}>
                         <View style={{ flexDirection: 'row', flex: 5 }}>
-                            <Icon name={icon} size={sizeFont(6)} color={'green'}></Icon>
+                            <Icon name={icon} size={sizeFont(6)} color={'#F05B36'}></Icon>
                             <Text style={styles.item_title}>{title}</Text>
                         </View>
                         <View style={{ flex: 5, alignItems: 'flex-end', marginRight: sizeWidth(3) }}>
-                            <Icon name={'chevron-right'} size={sizeFont(6)} color={'green'}></Icon>
+                            <Icon name={'chevron-right'} size={sizeFont(6)} color={'#F05B36'}></Icon>
                         </View>
                     </View>
                 </TouchableOpacity>
-                <OneLine color={'green'} />
+                <OneLine color={'#F05B36'} />
             </View>
         )
     }
@@ -44,9 +44,9 @@ export default class Profile extends Component {
         ]
         return (
             <View style={styles.container}>
-                <HeaderNav iconLeft='bars'
+                <HeaderNav 
                     title = "Profile"
-                    actionLeft={() => { this.props.navigation.openDrawer() }} />
+                    />
                 <View style={styles.container_menu_view}>
                     <FlatList
                         data={menu}

@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
                     onPress={() => { actionLeft() }}
                 >
                     {
-                        iconLeft ?
+                        iconLeft&&actionLeft ?
                             <Icon name={iconLeft} size={sizeFont(6)} color={"white"} light></Icon>
                             :
                             <View></View>
@@ -54,9 +54,10 @@ const styles = StyleSheet.create({
 
     },
     title: {
-        flex: 2,
+        flex: 3,
         flexDirection: 'row',
         justifyContent: 'center',
+        
        
 
     },
