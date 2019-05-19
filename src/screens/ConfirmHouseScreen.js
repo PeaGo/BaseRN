@@ -13,6 +13,7 @@ import { getUserHouse1 } from '../api/house';
 import { getUser } from '../api/auth.api';
 import { connect } from 'react-redux';
 import { userLogin} from '../redux/actions/userStatus.action'
+import AsyncstorageHelper from '../helper/asyncstorage.helper'
 class CheckBoxItem extends Component {
     // constructor(props) {
     //     super(props)
@@ -102,6 +103,7 @@ class ConfirmHouse extends Component {
             }
             let res = await createHouse(param).then(
                 this.props.userLogin(await getUser(this.props.user_info.info_user)),
+                await AsyncstorageHelper._storeData('userData', JSON.stringify(await getUser(this.props.user_info.info_user))),
             ).then(
 
                 console.log(await getUserHouse1()),
