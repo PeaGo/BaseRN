@@ -110,7 +110,15 @@ class ConfirmHouse extends Component {
             let data = await getUserHouse1();
             await this.props.getUserHouse_(data)
             this.props.hideLoading();
-            this.props.navigation.navigate('HouseScreenUser')
+            Alert.alert(
+                'Thông báo',
+                "Bạn đã tạo phòng thành công",
+                [
+                    { text: 'OK', onPress: () =>  this.props.navigation.navigate('HouseScreenUser')},
+                ],
+                { cancelable: false },
+            )
+            
              
         }
         else {

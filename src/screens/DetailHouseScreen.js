@@ -9,22 +9,31 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import HeaderNav from '../components/headerNav'
 import { BASE_URL_API } from '../config/app.config'
 import Swiper from 'react-native-swiper';
-import { deleteHouse } from '../api/house';
+import { deleteHouse,pinHouse } from '../api/house';
 import { getUserHouse } from '../redux/actions/house';
 import { getUserHouse1 } from '../api/house';
+import { getUser } from '../api/auth.api';
+import { userLogin} from '../redux/actions/userStatus.action'
+import AsyncstorageHelper from '../helper/asyncstorage.helper'
+import { show_loading, hide_loading } from '../redux/actions/loading.action'
+import Icon from 'react-native-vector-icons/FontAwesome';
+import moment from "moment";
+
 class DetailHouse extends Component {
     constructor(props) {
         let param = props.navigation.getParam('inforHouse');
         super(props);
         this.state = {
             inforHouse: param,
-
+            point_pin: 0,
+            pin: 0,
+            check_click: false
         };
     }
     async _deleteHouse(data) {
         // this.props.showLoading();
         // goi api 
-        console.log('1111111skkss')
+
         Alert.alert(
             'Thông báo',
             'Bạn muốn xóa bài đăng',
@@ -51,6 +60,76 @@ class DetailHouse extends Component {
                 this.props.navigation.navigate('HouseScreenUser')
             ),
         )
+    }
+    async _pinHouse(data) {
+        // this.props.showLoading();
+        // goi api 
+
+        Alert.alert(
+            'Thông báo',
+            'Bài đăng của bạn cần ' +data.point + ' để ghim bài',
+            [
+
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                { text: 'OK', onPress: () => this._confirmPinHouse(data) },
+            ],
+            { cancelable: false },
+        )
+
+
+
+    }
+    async _confirmPinHouse(data_pin) {
+    console.log('---',this.props.user_info.info_user.point)
+        let points_user = this.props.user_info.info_user.point;
+      
+        if (parseInt(points_user) >= parseInt(data_pin.point)) {
+            console.log('---',data_pin.point)
+            let user_point = points_user - data_pin.point;
+            let param = {
+                _id : data_pin._id,
+                point : user_point,
+                user_id: this.props.user_info.info_user._id
+            }
+            this.props.showLoading();
+            await pinHouse(param);
+            let user =await getUser(this.props.user_info.info_user);
+            await this.props.userLogin(user);
+            await AsyncstorageHelper._storeData('userData', JSON.stringify(user));
+            let data = await getUserHouse1();
+            await this.props.getUserHouse_(data)
+            this.props.hideLoading();
+            Alert.alert(
+                'Thông báo',
+                "Bạn đã ghim bài viết thành công",
+                [
+                    { text: 'OK', onPress: () =>  this.props.navigation.navigate('HouseScreenUser')},
+                ],
+                { cancelable: false },
+            )
+            
+             
+        }
+        else {
+            Alert.alert(
+                '',
+                "Bạn không đủ điểm vui lòng nạp thêm điểm",
+                [
+    
+                    {
+                        text: 'Ok',
+                        onPress: () => console.log('Cancel Pressed'),
+                        style: 'cancel',
+                    },
+                   
+                ],
+                { cancelable: false },
+            )
+        }
     }
     render() {
         let data = this.state.inforHouse
@@ -175,6 +254,35 @@ class DetailHouse extends Component {
                     </View>
                     <View style={styles.padding_bottom}>
                         <View>
+                            {this.state.inforHouse.state_pin === 1 ? <Text>Bài viết của đạt đươc ghim đến ngày {moment(this.state.inforHouse.out_date).format('DD/MM/YYYY')}</Text> : <View>
+                                <Text onPress={() => {
+                                    this.setState({ check_click: !this.state.check_click })
+                                }}><Icon name={'flag'} color={'gray'}></Icon> Ấn vào đây để ghim bài đăng của bạn</Text>
+                                {this.state.check_click ? <View style={{ marginLeft: 10 }}>
+                                    <FlatList
+                                        ListEmptyComponent={<Text>Không có dữ liệu</Text>}
+                                        data={date_pin}
+                                        keyExtractor={(item, index) => index.toString()}
+                                        renderItem={({ item, index }) => {
+                                            return (
+                                                <View style={{ margin: 10, padding: 8, height: sizeHeight(5), borderRadius: 30, backgroundColor: "#F05B36" }}
+                                                   
+                                                >
+                                                    <Text  onPress={() => {
+                                                    
+                                                        this._pinHouse({ _id: this.state.inforHouse._id,point:item.value })
+                                                    }} style={{ color: "white" }}>Ghim bài đăng {item.title}</Text>
+                                                </View>
+
+                                            )
+                                        }}
+                                    ></FlatList>
+                                </View> : <View></View>}
+                            </View>}
+                        </View>
+                    </View>
+                    <View style={styles.padding_bottom}>
+                        <View>
                             <View style={styles.bot_container}>
                                 <Text style={styles.text} onPress={() => {
                                     this._deleteHouse({ _id: this.state.inforHouse._id })
@@ -191,6 +299,12 @@ class DetailHouse extends Component {
         );
     }
 }
+const date_pin = [
+    { title: "5 ngày - 10 điểm", value: 10 },
+    { title: "10 ngày - 20 điểm", value: 20 },
+    { title: "15 ngày - 30 điểm", value: 30 },
+
+]
 const styles = StyleSheet.create({
     backgroud: {
 
@@ -260,7 +374,8 @@ const styles = StyleSheet.create({
 });
 const mapsStateToProps = (state) => {
     return {
-
+        list_user_house: state.houseReducer.list_user_house,
+        user_info: state.userInfo
     }
 }
 const mapsDispatchToProps = (dispatch) => {
@@ -268,6 +383,7 @@ const mapsDispatchToProps = (dispatch) => {
         showLoading: () => { dispatch(show_loading()) },
         hideLoading: () => { dispatch(hide_loading()) },
         getUserHouse_: (data) => { dispatch(getUserHouse(data)) },
+        userLogin : (data) => {dispatch(userLogin(data))}
     }
 }
 export default connect(mapsStateToProps, mapsDispatchToProps)(DetailHouse)

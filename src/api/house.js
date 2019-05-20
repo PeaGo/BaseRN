@@ -24,6 +24,14 @@ export const deleteHouse = async (data) => {
     }
     )
 }
+export const pinHouse = async (data) => {
+    console.log('--------', data)
+    await RequsetHelper.post(BASE_URL_API + '/house/pinhouse', data).then((res) => {
+        
+        return res
+    }
+    )
+}
 export const getUserHouse1 = async () => {
     //  AsyncstorageHelper._retrieveData('userData').then( async(userdata) => {
     //    let userJson = JSON.parse(userdata);

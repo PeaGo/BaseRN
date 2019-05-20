@@ -15,6 +15,10 @@ export const register = (registerdata) => {
     
     return RequsetHelper.post(BASE_URL_API+'/user/register', registerdata);
 }
+export const updateUser = (data) => {
+    return RequsetHelper.post(BASE_URL_API+'/user/updateuser', data);
+}
+
 export const gethistoryaddpoint = async(data) =>{
     let res = await RequsetHelper.get(BASE_URL_API + '/user/gethistoryaddpoint', data);
     return res;

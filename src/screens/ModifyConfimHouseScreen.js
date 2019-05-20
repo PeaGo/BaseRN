@@ -97,7 +97,15 @@ class ModifyConfirmHouse extends Component {
         await this.props.getUserHouse_(data)
        
         this.props.hideLoading();
-        this.props.navigation.navigate('HouseScreenUser')
+        Alert.alert(
+            'Thông báo',
+            "Bạn đã sửa thông tin phòng thành công",
+            [
+                { text: 'OK', onPress: () =>  this.props.navigation.navigate('HouseScreenUser')},
+            ],
+            { cancelable: false },
+        )
+        
 
     }
     render() {

@@ -49,6 +49,11 @@ export default class Profile extends Component {
                 icon: 'history',
                 screen: 'HistoryAddPoint'
             },
+            {
+                title: 'Thay đổi mật khẩu',
+                icon: 'key',
+                screen: 'ChangePassWord'
+            },
         ]
         return (
             <View style={styles.container}>

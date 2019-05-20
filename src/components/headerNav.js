@@ -25,7 +25,7 @@ import { connect } from 'react-redux';
                     <Text style={styles.text_title}>{title}</Text>
                 </View>
                 <TouchableOpacity style={styles.right}
-                    onPress={() => { actionRight() }}
+                  
                 >
                     {
                         // iconRight ? 
