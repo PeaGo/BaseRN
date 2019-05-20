@@ -32,37 +32,31 @@ class CheckBoxItem extends Component {
         )
     }
 }
-export default class DescriptionHouse extends Component {
+export default class ModifyDescriptionHouse extends Component {
     constructor(props) {
         super(props)
+        let param = this.props.navigation.getParam('inforHouse');
+        console.log('qqq',param.check_bill)
         this.state = {
-            location: {},
-            string: 'Nhập địa chỉ phòng của bạn',
-            address: '',
-            address_detail: '',
-            type_room: '',
-            quantity_room: 0,
-            total_area: 0,
-            quantity_people: 0,
-            type_sex: 'Tất cả',
-            price: 0,
-            deposit: 0,
-            electric_bill: 0,
-            water_bill: 0,
-            check_bill: 0,
+            address_detail: param.address_detail,
+            type_room: param.type_room,
+            quantity_room: param.quantity_room,
+            total_area: param.total_area,
+            type_sex: param.type_sex,
+            price: param.price,
+            deposit: param.deposit,
+            electric_bill: param.electric_bill,
+            water_bill: param.water_bill,
+            check_bill: param.check_bill,
             check_save: false,
+            quantity_people:param.quantity_people
 
         }
     }
-    action(address, location) {
-        this.setState({ address, location }, () => {
-            this.setState({ address_detail: this.state.address }, () => {
-                this.setState({ address_detail: this.state.address })
-            })
-        })
-    }
+   
     render() {
         let state = this.state
+        let param = this.props.navigation.getParam('inforHouse');
         return (
 
             <View style={{ paddingBottom: 80 }}>
@@ -92,26 +86,17 @@ export default class DescriptionHouse extends Component {
                         {this.state.type_room === "" && this.state.check_save ? <Text style={{ color: "red", padding: 2 }}>Vui lòng chọn loại phòng</Text> : <Text></Text>}
                     </View>
                     <View style={{ marginLeft: 10 }}>
-                        <Text>Địa chỉ</Text>
-                        <TouchableOpacity style={styles.input_row} onPress={() => {
-                            this.props.navigation.navigate('LocationHouseScreen', { action: (address, location) => this.action(address, location), address: this.state.address })
-                        }}>
-                            <Text>{this.state.address == '' ? this.state.string : this.state.address}</Text>
-                        </TouchableOpacity>
-                        {this.state.address_detail === "" && this.state.check_save? <Text style={{ color: "red", padding: 2 }}>Vui lòng nhập địa chỉ phòng</Text> : <Text></Text>}
-                    </View>
-                    <View style={{ marginLeft: 10 }}>
                         <Text>Địa chỉ chi tiết</Text>
-                        <TextInput style={styles.input_row} placeholder={'Địa chỉ chi tiết phòng trọ'} value={this.state.address_detail} onChangeText={(address_detail) => this.setState({ address_detail })}></TextInput>
+                        <TextInput style={styles.input_row} editable={false} placeholder={'Địa chỉ chi tiết phòng trọ'} value={this.state.address_detail} onChangeText={(address_detail) => this.setState({ address_detail })}></TextInput>
 
                     </View>
                     <View style={{ marginLeft: 10 }}>
                         <Text>Sức chứa</Text>
-                        <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.quantity_people} onChangeText={(quantity_people) => this.setState({ quantity_people })}></TextInput>
+                        <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.quantity_people.toString()} onChangeText={(quantity_people) => this.setState({ quantity_people })}></TextInput>
                     </View>
                     <View style={{ marginLeft: 10 }}>
                         <Text>Diện tích phòng(m2)</Text>
-                        <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.total_area} onChangeText={(total_area) => this.setState({ total_area })}></TextInput>
+                        <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.total_area.toString()} onChangeText={(total_area) => this.setState({ total_area })}></TextInput>
                         {this.state.total_area === 0 && this.state.check_save? <Text style={{ color: "red", padding: 2 }}>Vui lòng nhập diện tích phòng</Text> : <Text></Text>}
                     </View>
                     <View style={{ marginLeft: 10 }}>
@@ -136,27 +121,27 @@ export default class DescriptionHouse extends Component {
                     </View>
                     <View style={{ marginLeft: 10 }}>
                         <Text>Giá cho thuê/phòng (triệu/tháng)</Text>
-                        <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.price} onChangeText={(price) => this.setState({ price })}></TextInput>
+                        <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.price.toString()} onChangeText={(price) => this.setState({ price})}></TextInput>
                         {this.state.price === 0 && this.state.check_save? <Text style={{ color: "red", padding: 2 }}>Vui lòng nhập giá phòng</Text> : <Text></Text>}
                     </View>
                     <View style={{ marginLeft: 10 }}>
                         <Text>Tiền cọc (triệu)</Text>
-                        <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.deposit} onChangeText={(deposit) => this.setState({ deposit })}></TextInput>
+                        <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.deposit.toString()} onChangeText={(deposit) => this.setState({deposit })}></TextInput>
                     </View >
                     <CheckBox
                         title='Điện nước giá dân'
-                        checked={this.state.check_bill == 1 ? true : false}
-                        onPress={() => this.setState({ check_bill: this.state.check_bill == 1 ? 0 : 1, electric_bill: 0, water_bill: 0 })}
+                        checked={parseInt(this.state.check_bill) == 1 ? true : false}
+                        onPress={() => this.setState({ check_bill: parseInt(this.state.check_bill) == 1 ? 0 : 1, electric_bill: 0, water_bill: 0 })}
                     />
-                    {this.state.check_bill == 1 ? null :
+                    {parseInt(this.state.check_bill) == 1 ? null :
                         <View>
                             <View style={{ marginLeft: 10 }}>
                                 <Text>Tiền điện/kw</Text>
-                                <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.electric_bill} onChangeText={(electric_bill) => this.setState({ electric_bill })}></TextInput>
+                                <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.electric_bill.toString()} onChangeText={(electric_bill) => this.setState({ electric_bill })}></TextInput>
                             </View>
                             <View style={{ marginLeft: 10 }}>
                                 <Text>Tiền nước/m3</Text>
-                                <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.water_bill} onChangeText={(water_bill) => this.setState({ water_bill })}></TextInput>
+                                <TextInput style={styles.input_row} keyboardType={'numeric'} value={this.state.water_bill.toString()} onChangeText={(water_bill) => this.setState({ water_bill })}></TextInput>
                             </View>
                         </View>}
                     <View style={{ alignItems: 'center', flexDirection: 'column' }}>
@@ -168,7 +153,19 @@ export default class DescriptionHouse extends Component {
                                 }
                                 else{
                                     this.setState({check_save : false})
-                                    this.props.navigation.navigate('UtilitiesHouse', { inforHouse: this.state })
+                                   
+                                    param.type_room =  this.state.type_room;
+                                    param.quantity_room = this.state.quantity_room;
+                                    param.total_area = this.state.total_area;
+                                    param.type_sex = this.state.type_sex;
+                                    param.price = this.state.price;
+                                    param.deposit = this.state.deposit;
+                                    param.electric_bill = this.state.electric_bill;
+                                    param.water_bill = this.state.water_bill;
+                                    param.check_bill = this.state.check_bill;
+                            
+                                    param.quantity_people = this.state.quantity_people
+                                    this.props.navigation.navigate('ModifyUtilitiesHouse', { inforHouse: param })
                                 }
                                 
                             }}

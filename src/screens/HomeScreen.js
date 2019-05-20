@@ -48,11 +48,15 @@ class Item extends Component {
             }}>
                 <Image source={{ uri: BASE_URL_API + '/' + item.image_path[0] }} style={styles.imageView} />
 
-                <View>
-                    <Text style={styles.textView}><Icon name={"home"}></Icon> {item.title}</Text>
-                    <Text style={styles.textView}><Icon name={"dollar"}></Icon> Giá: {Math.round(item.price / 1000000 * 10) / 10} triệu/tháng</Text>
-                    <Text style={styles.textView}><Icon name={"th-large"}></Icon> Diện tích: {item.total_area} m2</Text>
-                    <Text style={styles.textView}><Icon name={"road"}></Icon> Khoảng cách: {Math.round(item.distance / 1000 * 10) / 10} km</Text>
+                <View style={{ width: '75%' }}>
+                    <View style={{ flexDirection: 'row', width: '100%' }}>
+                        <Text style={[styles.textView, { width: "90%" }]}><Icon name={"home"} color={'#F05B36'}></Icon> {item.title}</Text>
+                        <View style={{ width: "10%" }}>{item.state_pin === 1 ?<Icon name={'flag'} color={'gray'}></Icon> : <View></View>}</View>
+                    </View>
+                    {/* <Text style={styles.textView}><Icon name={"home"}></Icon> {item.title}</Text> */}
+                    <Text style={styles.textView}><Icon name={"dollar"} color={'#F05B36'}></Icon> Giá: {item.price} (triệu/tháng)</Text>
+                    <Text style={styles.textView}><Icon name={"th-large"} color={'#F05B36'}></Icon> Diện tích: {item.total_area} m2</Text>
+                    <Text style={styles.textView}><Icon name={"road"} color={'#F05B36'}></Icon> Khoảng cách: {Math.round(item.distance / 1000 * 10) / 10} km</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -89,7 +93,7 @@ class HomeScreen extends Component {
         let data_search = {
             lat: this.state.lat,
             lng: this.state.lng,
-            distance: this.state.distance,
+            distance: 100,
             price: this.state.price,
             total_area: this.state.total_area,
             type_room: this.state.type_room
@@ -298,7 +302,7 @@ class HomeScreen extends Component {
                             backgroundColor: "#F05B36", height: sizeHeight(6),
                             width: sizeWidth(100),
                         }}>
-                            <View style={{flex:1,flexDirection:"row"}}>
+                            <View style={{ flex: 1, flexDirection: "row" }}>
                                 <TouchableOpacity style={styles.input_row} onPress={() => {
                                     this.props.navigation.navigate('LocationUserScreen', { action: (address, location) => this.action(address, location), address: this.state.address })
                                 }}>
@@ -311,7 +315,7 @@ class HomeScreen extends Component {
                             </View>
                         </SafeAreaView>
                         <KeyboardAwareScrollView >
-                            <View style={{ paddingTop: 10 ,paddingBottom:30}}>
+                            <View style={{ paddingTop: 10, paddingBottom: 30 }}>
                                 <FlatList
                                     data={this.state.houses}
                                     renderItem={({ item }) =>

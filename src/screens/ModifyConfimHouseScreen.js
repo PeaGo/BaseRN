@@ -7,14 +7,15 @@ import { sizeFont, sizeHeight, sizeWidth } from '../helper/size.helper'
 import HeaderNav from '../components/headerNav'
 import { CheckBox } from 'react-native-elements'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { createHouse } from '../api/house';
+import { updateHouse } from '../api/house';
 import { getUserHouse } from '../redux/actions/house';
 import { getUserHouse1 } from '../api/house';
 import { getUser } from '../api/auth.api';
 import { connect } from 'react-redux';
-import { userLogin} from '../redux/actions/userStatus.action'
+import { userLogin } from '../redux/actions/userStatus.action'
 import AsyncstorageHelper from '../helper/asyncstorage.helper'
 import { show_loading, hide_loading } from '../redux/actions/loading.action'
+import ConfirmHouseScreen from './ConfirmHouseScreen';
 class CheckBoxItem extends Component {
     // constructor(props) {
     //     super(props)
@@ -40,31 +41,27 @@ class CheckBoxItem extends Component {
         )
     }
 }
-class ConfirmHouse extends Component {
+class ModifyConfirmHouse extends Component {
     constructor(props) {
         let param = props.navigation.getParam('inforHouse');
         // console.log('------',param)
         super(props)
         this.state = {
-            phone: '',
+            phone: param.phone,
             title: param.type_room + ', ' + param.address_detail,
-            description: '',
+            description: param.description,
             check_save: false,
-            point_pin: 10,
-            date_pin: "5 ngày - 10 điểm",
-            pin: 0
+
         }
     }
     async _createHouse() {
         // this.props.showLoading();
         // goi api 
-        let text = 'Bài đăng của bạn cần 30 điểm đăng bài '
-        if (this.state.pin === 1) {
-            text = 'Bài đăng của bạn cần 30 điểm đăng bài và ' + this.state.point_pin + " điểm ghim bài viết"
-        }
+
+
         Alert.alert(
             'Thông báo',
-            text,
+            "Bạn có muốn sửa thông tin",
             [
 
                 {
@@ -87,48 +84,20 @@ class ConfirmHouse extends Component {
         // this.props.hideLoading();
     }
     async _confirmHouse() {
-        let points = 30 + this.state.point_pin;
-        let points_user = this.props.user_info.info_user.point;
-        if (points_user >= points) {
-            let user_point = points_user - points;
-            let param = this.props.navigation.getParam('inforHouse');
-            param = {
-                ...param,
-                phone: this.state.phone,
-                title: this.state.title,
-                description: this.state.description,
-                pin: this.state.pin,
-                point_pin: this.state.point_pin,
-                user_point: user_point,
-                user_id: this.props.user_info.info_user._id
-            }
-            this.props.showLoading();
-            await createHouse(param);
-            let user =await getUser(this.props.user_info.info_user);
-            await this.props.userLogin(user);
-            await AsyncstorageHelper._storeData('userData', JSON.stringify(user));
-            let data = await getUserHouse1();
-            await this.props.getUserHouse_(data)
-            this.props.hideLoading();
-            this.props.navigation.navigate('HouseScreenUser')
-             
-        }
-        else {
-            Alert.alert(
-                '',
-                "Bạn không đủ điểm vui lòng nạp thêm điểm",
-                [
-    
-                    {
-                        text: 'Ok',
-                        onPress: () => console.log('Cancel Pressed'),
-                        style: 'cancel',
-                    },
-                   
-                ],
-                { cancelable: false },
-            )
-        }
+        let param = this.props.navigation.getParam('inforHouse');
+        param.description = this.state.description;
+        param.phone = this.state.phone;
+        param.title = this.state.titles
+        this.props.showLoading();
+        await updateHouse(param);
+        let user = await getUser(this.props.user_info.info_user);
+        await this.props.userLogin(user);
+        await AsyncstorageHelper._storeData('userData', JSON.stringify(user));
+        let data = await getUserHouse1();
+        await this.props.getUserHouse_(data)
+       
+        this.props.hideLoading();
+        this.props.navigation.navigate('HouseScreenUser')
 
     }
     render() {
@@ -162,32 +131,6 @@ class ConfirmHouse extends Component {
                             <TextInput style={styles.input_row} multiline={true} numberOfLines={5} value={this.state.description} onChangeText={(description) => this.setState({ description })}></TextInput>
                         </View>
                     </View>
-                    <CheckBox
-                        title='Ghim bài đăng'
-                        checked={this.state.pin === 1 ? true : false}
-                        onPress={() => this.setState({ pin: this.state.pin === 1 ? 0 : 1 })}
-                    />
-                    {this.state.pin === 1 ? <View style={{ marginLeft: 10 }}>
-                        <FlatList
-                            ListEmptyComponent={<Text>Không có dữ liệu</Text>}
-                            data={date_pin}
-                            keyExtractor={(item, index) => index.toString()}
-                            renderItem={({ item, index }) => {
-                                return (
-                                    <CheckBoxItem
-                                        value={item.title}
-                                        point_pin={item.value}
-                                        type={this.state.date_pin}
-                                        _reset={(date_pin, point_pin) => {
-                                            this.setState({ date_pin: date_pin, point_pin: point_pin })
-                                        }}
-                                    />
-
-                                )
-                            }}
-                        ></FlatList>
-                    </View> : <View></View>}
-
                     <View style={{ alignItems: 'center', flexDirection: 'column', marginTop: 5 }}>
                         <Button
                             onPress={() => {
@@ -199,7 +142,7 @@ class ConfirmHouse extends Component {
                                 }
 
                             }}
-                            title="Tạo phòng"
+                            title="Sửa thông tin phòng"
                             color="#F05B36"
                         />
                     </View>
@@ -208,12 +151,6 @@ class ConfirmHouse extends Component {
         );
     }
 }
-const date_pin = [
-    { title: "5 ngày - 10 điểm", value: 10 },
-    { title: "10 ngày - 20 điểm", value: 20 },
-    { title: "15 ngày - 30 điểm", value: 30 },
-
-]
 
 const styles = StyleSheet.create({
     input_row: {
@@ -232,8 +169,8 @@ const mapsDispatchToProps = (dispatch) => {
         showLoading: () => { dispatch(show_loading()) },
         hideLoading: () => { dispatch(hide_loading()) },
         getUserHouse_: (data) => { dispatch(getUserHouse(data)) },
-        userLogin : (data) => {dispatch(userLogin(data))}
+        userLogin: (data) => { dispatch(userLogin(data)) }
 
     }
 }
-export default connect(mapsStateToProps, mapsDispatchToProps)(ConfirmHouse)
+export default connect(mapsStateToProps, mapsDispatchToProps)(ModifyConfirmHouse)

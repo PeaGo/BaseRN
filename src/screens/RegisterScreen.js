@@ -126,7 +126,7 @@ class Register extends Component {
                     </View>
                     <View style={styles.input_row}>
                         <Text style={styles.label_input}>Mật khẩu</Text>
-                        <TextInput style={styles.input} placeholder={'mật khẩu'} value={this.state.password} onChangeText={(password) => this.setState({ password })}></TextInput>
+                        <TextInput style={styles.input} secureTextEntry={true} placeholder={'mật khẩu'} value={this.state.password} onChangeText={(password) => this.setState({ password })}></TextInput>
                     </View>
                     <View style={styles.input_row}>
                         <Text style={styles.label_input}>Số điện thoại</Text>

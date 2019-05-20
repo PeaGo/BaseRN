@@ -8,14 +8,22 @@ export const createHouse = async (data) => {
             ...data,
             created_by: userJson._id
         }
-        console.log('111',data)
-        return RequsetHelper.post(BASE_URL_API + '/house/createhouse', data).then((res) => {
-            console.log('----------------', res)
-        }
-        );
+        console.log('111', data)
+        return RequsetHelper.post(BASE_URL_API + '/house/createhouse', data)
     })
 }
+export const updateHouse = async (data) => {
 
+    return  RequsetHelper.post(BASE_URL_API + '/house/updatehouse', data)
+}
+export const deleteHouse = async (data) => {
+
+    await RequsetHelper.post(BASE_URL_API + '/house/deletehouse', data).then((res) => {
+        console.log('--------', res)
+        return res
+    }
+    )
+}
 export const getUserHouse1 = async () => {
     //  AsyncstorageHelper._retrieveData('userData').then( async(userdata) => {
     //    let userJson = JSON.parse(userdata);
@@ -24,7 +32,8 @@ export const getUserHouse1 = async () => {
     //    }
     let userData = await AsyncstorageHelper._retrieveData('userData').then(data => JSON.parse(data));
     let data = {
-        created_by: userData._id
+        created_by: userData._id,
+        status: 1
     }
     let res = await RequsetHelper.get(BASE_URL_API + '/house/getuserhouses', data);
     return res;

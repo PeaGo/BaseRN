@@ -13,6 +13,7 @@ export const getUserSearch = async (data_search) => {
     //     ...data_search,
     //     created_by: userData._id
     // }
+    data_search.status = 1
     let res = await RequsetHelper.get(BASE_URL_API + '/house/getusersearch', data_search);
     return res;
     //    })

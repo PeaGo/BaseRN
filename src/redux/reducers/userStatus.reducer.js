@@ -13,6 +13,11 @@ export default userStatusReducer = (state = defaultState, action) => {
                 userStatus : USER_STATUS_ACTION.AUTHOR_STATUS
             }
         }
+        case USER_STATUS_ACTION.LOGIN_STATUS : {
+            return {
+                userStatus : USER_STATUS_ACTION.LOGIN_STATUS
+            }
+        }
         
         default : return state
     }

@@ -30,6 +30,10 @@ class Main extends Component {
         this.props.hideLoading();
     }
     render() {
+        console.log(this.props);
+        console.log('okookokokoko');
+        
+        
         return (
             <View style={STYLE_CONTAINER}>
                 {

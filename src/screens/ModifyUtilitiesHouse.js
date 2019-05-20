@@ -8,6 +8,7 @@ import HeaderNav from '../components/headerNav'
 import { CheckBox } from 'react-native-elements'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ImagePicker from 'react-native-image-picker';
+import { BASE_URL_API } from '../config/app.config'
 const options = {
     title: 'Select Avatar',
     customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
@@ -39,14 +40,15 @@ class UtilitieItem extends Component {
         )
     }
 }
-export default class UtilitiesHouse extends Component {
+export default class ModifyUtilitiesHouse extends Component {
     constructor(props) {
         super(props)
+        let param = this.props.navigation.getParam('inforHouse');
         this.state = {
             utilities: utilities_type,
-            images: [],
+            images: param.image_path,
             avatar: '',
-            utilities_selected: [],
+            utilities_selected: param.utilities,
             change: false,
         }
     }
@@ -111,15 +113,15 @@ export default class UtilitiesHouse extends Component {
                     title="Tiện ích phòng"
                     actionLeft={() => { this.props.navigation.goBack() }} />
             <KeyboardAwareScrollView >
-                <TouchableOpacity onPress={() => { this.showAvatar() }}>
+                {/* <TouchableOpacity onPress={() => { this.showAvatar() }}>
                     <View ><Text style={styles.textput}>+ Thêm ảnh</Text></View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <View style={{ width: sizeWidth(96), marginLeft: sizeWidth(2) }}>
                     <FlatList
 
                         data={this.state.images}
                         renderItem={({ item, index }) => {
-                            let source = { uri: 'data:image/jpeg;base64,' + item };
+                            let source = { uri: BASE_URL_API + '/' + item };
                             return (
                                 <View style={{ margin: 5, borderWidth: 0.2 }}>
                                     <Image style={styles.image} key={index} source={source} style={{ width: 100, height: 100 }} />
@@ -174,12 +176,9 @@ export default class UtilitiesHouse extends Component {
                                 param.electric_bill = parseInt(param.electric_bill)
                                 param.water_bill = parseInt(param.water_bill)
                                 param.check_bill = parseInt(param.check_bill)
-                                param = {
-                                    ...param,
-                                    utilities: this.state.utilities_selected,
-                                    images: this.state.images
-                                }
-                                this.props.navigation.navigate('ConfirmHouse', { inforHouse: param })
+                                param.utilities = this.state.utilities_selected
+                        
+                                this.props.navigation.navigate('ModifyConfimHouse', { inforHouse: param })
                             }
                         }}
                         style={{ margin: 40 }}

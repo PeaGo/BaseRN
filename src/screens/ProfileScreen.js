@@ -10,12 +10,15 @@ import OneLine from '../components/oneline'
 
 class ItemMenu extends Component {
     render() {
-        const {navigation} = this.props
+        const { navigation } = this.props
         const { icon, screen, title } = this.props.item;
         return (
             <View>
-                <TouchableOpacity onPress={()=>{
+                <TouchableOpacity onPress={() => {
+
                     navigation.navigate(screen)
+
+
                 }}>
                     <View style={styles.container_item}>
                         <View style={{ flexDirection: 'row', flex: 5 }}>
@@ -37,25 +40,30 @@ export default class Profile extends Component {
     render() {
         const menu = [
             {
-                title: 'Driver Schedule',
-                icon: 'list-alt',
-                screen: 'Schedule'
+                title: 'Nạp điểm',
+                icon: 'credit-card',
+                screen: 'AddPoint'
+            },
+            {
+                title: 'Lịch sử nạp điểm',
+                icon: 'history',
+                screen: 'HistoryAddPoint'
             },
         ]
         return (
             <View style={styles.container}>
-                <HeaderNav 
-                    title = "Profile"
-                    />
+                <HeaderNav
+                    title="Profile"
+                />
                 <View style={styles.container_menu_view}>
                     <FlatList
                         data={menu}
-                        renderItem={({ item }) => (<ItemMenu item={item} navigation={this.props.navigation}/>)}
+                        renderItem={({ item }) => (<ItemMenu item={item} navigation={this.props.navigation} />)}
                     >
 
                     </FlatList>
                 </View>
-                <Logout />
+                <Logout navigation={this.props.navigation} />
             </View>
         )
     }
