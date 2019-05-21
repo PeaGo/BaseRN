@@ -113,6 +113,60 @@ class DetailHouseSearch extends Component {
                             </View>
 
                         </View>
+                        {data.check_bill === 1 ? 
+                        <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                            <View style={{
+                                width: sizeWidth(40), marginLeft: 10, textAlignVertical: 'center',
+                                justifyContent: 'center', alignItems: "center"
+                            }}>
+                                <Text >Điện nước giá dân</Text>
+
+                            </View>
+                        </View>
+                            : <View><View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                                <View style={{
+                                    width: sizeWidth(30), marginLeft: 10, textAlignVertical: 'center',
+                                    justifyContent: 'center', alignItems: "center"
+                                }}>
+                                    <Text >Tiền điện</Text>
+
+                                </View>
+                                <View style={{
+                                    width: sizeWidth(30), marginLeft: 10, textAlignVertical: 'center',
+                                    justifyContent: 'center', alignItems: "center"
+                                }}><Text>Tiền nước</Text></View>
+                                <View style={{
+                                width: sizeWidth(20), marginRight: 10, textAlignVertical: 'center',
+                                justifyContent: 'center', alignItems: "center"
+                            }}>
+                                <Text ></Text>
+
+                            </View>
+                            </View>
+                            <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                            <View style={{
+                                width: sizeWidth(30), marginLeft: 10, textAlignVertical: 'center',
+                                justifyContent: 'center', alignItems: "center"
+                            }}>
+                                <Text style={{ color: '#dc3545' }}>{data.electric_bill}/kw</Text>
+
+                            </View>
+                            <View style={{
+                                width: sizeWidth(30), marginLeft: 10, textAlignVertical: 'center',
+                                justifyContent: 'center', alignItems: "center"
+                            }}>
+                                <Text style={{ color: '#dc3545' }}>{data.water_bill}/m3</Text>
+                            </View>
+                            <View style={{
+                                width: sizeWidth(20), marginRight: 10, textAlignVertical: 'center',
+                                justifyContent: 'center', alignItems: "center"
+                            }}>
+                                <Text style={{ color: '#dc3545' }}></Text>
+
+                            </View>
+                        </View>
+                            </View>
+                        }
                     </View>
                     <View style={styles.padding_bottom}>
                         <View>

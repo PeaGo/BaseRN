@@ -9,11 +9,11 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import HeaderNav from '../components/headerNav'
 import { BASE_URL_API } from '../config/app.config'
 import Swiper from 'react-native-swiper';
-import { deleteHouse,pinHouse } from '../api/house';
+import { deleteHouse, pinHouse } from '../api/house';
 import { getUserHouse } from '../redux/actions/house';
 import { getUserHouse1 } from '../api/house';
 import { getUser } from '../api/auth.api';
-import { userLogin} from '../redux/actions/userStatus.action'
+import { userLogin } from '../redux/actions/userStatus.action'
 import AsyncstorageHelper from '../helper/asyncstorage.helper'
 import { show_loading, hide_loading } from '../redux/actions/loading.action'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -67,7 +67,7 @@ class DetailHouse extends Component {
 
         Alert.alert(
             'Thông báo',
-            'Bài đăng của bạn cần ' +data.point + ' để ghim bài',
+            'Bài đăng của bạn cần ' + data.point + ' để ghim bài',
             [
 
                 {
@@ -84,20 +84,20 @@ class DetailHouse extends Component {
 
     }
     async _confirmPinHouse(data_pin) {
-    console.log('---',this.props.user_info.info_user.point)
+        console.log('---', this.props.user_info.info_user.point)
         let points_user = this.props.user_info.info_user.point;
-      
+
         if (parseInt(points_user) >= parseInt(data_pin.point)) {
-            console.log('---',data_pin.point)
+            console.log('---', data_pin.point)
             let user_point = points_user - data_pin.point;
             let param = {
-                _id : data_pin._id,
-                point : user_point,
+                _id: data_pin._id,
+                point: user_point,
                 user_id: this.props.user_info.info_user._id
             }
             this.props.showLoading();
             await pinHouse(param);
-            let user =await getUser(this.props.user_info.info_user);
+            let user = await getUser(this.props.user_info.info_user);
             await this.props.userLogin(user);
             await AsyncstorageHelper._storeData('userData', JSON.stringify(user));
             let data = await getUserHouse1();
@@ -107,25 +107,25 @@ class DetailHouse extends Component {
                 'Thông báo',
                 "Bạn đã ghim bài viết thành công",
                 [
-                    { text: 'OK', onPress: () =>  this.props.navigation.navigate('HouseScreenUser')},
+                    { text: 'OK', onPress: () => this.props.navigation.navigate('HouseScreenUser') },
                 ],
                 { cancelable: false },
             )
-            
-             
+
+
         }
         else {
             Alert.alert(
                 '',
                 "Bạn không đủ điểm vui lòng nạp thêm điểm",
                 [
-    
+
                     {
                         text: 'Ok',
                         onPress: () => console.log('Cancel Pressed'),
                         style: 'cancel',
                     },
-                   
+
                 ],
                 { cancelable: false },
             )
@@ -227,8 +227,63 @@ class DetailHouse extends Component {
                             </View>
 
                         </View>
+                        {data.check_bill === 1 ? 
+                        <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                            <View style={{
+                                width: sizeWidth(40), marginLeft: 10, textAlignVertical: 'center',
+                                justifyContent: 'center', alignItems: "center"
+                            }}>
+                                <Text >Điện nước giá dân</Text>
+
+                            </View>
+                        </View>
+                            : <View><View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                                <View style={{
+                                    width: sizeWidth(30), marginLeft: 10, textAlignVertical: 'center',
+                                    justifyContent: 'center', alignItems: "center"
+                                }}>
+                                    <Text >Tiền điện</Text>
+
+                                </View>
+                                <View style={{
+                                    width: sizeWidth(30), marginLeft: 10, textAlignVertical: 'center',
+                                    justifyContent: 'center', alignItems: "center"
+                                }}><Text>Tiền nước</Text></View>
+                                <View style={{
+                                width: sizeWidth(20), marginRight: 10, textAlignVertical: 'center',
+                                justifyContent: 'center', alignItems: "center"
+                            }}>
+                                <Text ></Text>
+
+                            </View>
+                            </View>
+                            <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                            <View style={{
+                                width: sizeWidth(30), marginLeft: 10, textAlignVertical: 'center',
+                                justifyContent: 'center', alignItems: "center"
+                            }}>
+                                <Text style={{ color: '#dc3545' }}>{data.electric_bill}/kw</Text>
+
+                            </View>
+                            <View style={{
+                                width: sizeWidth(30), marginLeft: 10, textAlignVertical: 'center',
+                                justifyContent: 'center', alignItems: "center"
+                            }}>
+                                <Text style={{ color: '#dc3545' }}>{data.water_bill}/m3</Text>
+                            </View>
+                            <View style={{
+                                width: sizeWidth(20), marginRight: 10, textAlignVertical: 'center',
+                                justifyContent: 'center', alignItems: "center"
+                            }}>
+                                <Text style={{ color: '#dc3545' }}></Text>
+
+                            </View>
+                        </View>
+                            </View>
+                        }
 
                     </View>
+
                     <View style={styles.padding_bottom}>
                         <View>
                             <Text style={styles.tienich}>Tiện ích</Text>
@@ -266,11 +321,11 @@ class DetailHouse extends Component {
                                         renderItem={({ item, index }) => {
                                             return (
                                                 <View style={{ margin: 10, padding: 8, height: sizeHeight(5), borderRadius: 30, backgroundColor: "#F05B36" }}
-                                                   
+
                                                 >
-                                                    <Text  onPress={() => {
-                                                    
-                                                        this._pinHouse({ _id: this.state.inforHouse._id,point:item.value })
+                                                    <Text onPress={() => {
+
+                                                        this._pinHouse({ _id: this.state.inforHouse._id, point: item.value })
                                                     }} style={{ color: "white" }}>Ghim bài đăng {item.title}</Text>
                                                 </View>
 
@@ -383,7 +438,7 @@ const mapsDispatchToProps = (dispatch) => {
         showLoading: () => { dispatch(show_loading()) },
         hideLoading: () => { dispatch(hide_loading()) },
         getUserHouse_: (data) => { dispatch(getUserHouse(data)) },
-        userLogin : (data) => {dispatch(userLogin(data))}
+        userLogin: (data) => { dispatch(userLogin(data)) }
     }
 }
 export default connect(mapsStateToProps, mapsDispatchToProps)(DetailHouse)

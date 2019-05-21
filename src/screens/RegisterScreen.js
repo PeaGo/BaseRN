@@ -66,11 +66,6 @@ class Register extends Component {
                 'Tạo tài khoản thành công',
                 [
                  
-                  {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                  },
                   {text: 'OK', onPress: () => this.props.navigation.goBack()},
                 ],
                 {cancelable: false},

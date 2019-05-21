@@ -3,14 +3,14 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import { connect } from 'react-redux';
 import {
-    View, Text, StyleSheet, FlatList, TouchableOpacity,TextInput,Alert
+    View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Alert
 } from 'react-native'
 import { show_loading, hide_loading } from '../redux/actions/loading.action'
 import HeaderNav from '../components/headerNav'
 import { sizeFont, sizeHeight, sizeWidth } from '../helper/size.helper'
 import { updateUser } from '../api/auth.api';
 import AsyncstorageHelper from '../helper/asyncstorage.helper'
-import { userLogin} from '../redux/actions/userStatus.action'
+import { userLogin } from '../redux/actions/userStatus.action'
 import { getUser } from '../api/auth.api';
 class ChangePassWord extends Component {
     constructor(props) {
@@ -18,10 +18,11 @@ class ChangePassWord extends Component {
         this.state = {
             password: '',
             repassword: '',
+            oldpassword: '',
         };
     }
     async _changePass() {
-        if(this.state.password !== this.state.repassword){
+        if (this.state.password !== this.state.repassword) {
             Alert.alert(
                 'Thông báo',
                 "Mật khẩu không khớp",
@@ -35,7 +36,7 @@ class ChangePassWord extends Component {
                 { cancelable: false },
             )
         }
-        else if(this.state.password === ""){
+        else if (this.state.password === "" || this.state.oldpassword === "") {
             Alert.alert(
                 'Thông báo',
                 "Vui lòng nhập mật khẩu",
@@ -49,24 +50,24 @@ class ChangePassWord extends Component {
                 { cancelable: false },
             )
         }
-        else if(this.state.password === this.state.repassword){
+        else if (this.state.password === this.state.repassword) {
             this.props.showLoading();
-            let mes = await updateUser({_id : this.props.user_info.info_user._id,password:this.state.password});
-            let user =await getUser(this.props.user_info.info_user);
+            let mes = await updateUser({ _id: this.props.user_info.info_user._id, password: this.state.password,oldpassword:this.state.oldpassword });
+            let user = await getUser(this.props.user_info.info_user);
             await this.props.userLogin(user);
             await AsyncstorageHelper._storeData('userData', JSON.stringify(user));
-           
+
             Alert.alert(
                 'Thông báo',
                 mes.message,
                 [
-                    { text: 'OK', onPress: () =>  this.props.navigation.goBack()},
+                    { text: 'OK', onPress: () => this.props.navigation.goBack() },
                 ],
                 { cancelable: false },
             )
             this.props.hideLoading();
         }
-       
+
     }
     render() {
 
@@ -80,6 +81,10 @@ class ChangePassWord extends Component {
                 <KeyboardAwareScrollView >
                     <View style={{ paddingTop: 10 }}>
                         <View style={styles.input_container}>
+                            <View style={styles.input_row}>
+                                <Text style={styles.label_input}>Mật khẩu cũ</Text>
+                                <TextInput style={styles.input} placeholder={'mật khẩu mới'} secureTextEntry={true} password={true} value={this.state.oldpassword} onChangeText={(oldpassword) => this.setState({ oldpassword })}></TextInput>
+                            </View>
                             <View style={styles.input_row}>
                                 <Text style={styles.label_input}>Mật khẩu mới</Text>
                                 <TextInput style={styles.input} placeholder={'mật khẩu mới'} secureTextEntry={true} password={true} value={this.state.password} onChangeText={(password) => this.setState({ password })}></TextInput>
@@ -163,7 +168,7 @@ const mapsDispatchToProps = (dispatch) => {
     return {
         showLoading: () => { dispatch(show_loading()) },
         hideLoading: () => { dispatch(hide_loading()) },
-        userLogin : (data) => {dispatch(userLogin(data))}
+        userLogin: (data) => { dispatch(userLogin(data)) }
     }
 }
 export default connect(mapsStateToProps, mapsDispatchToProps)(ChangePassWord)

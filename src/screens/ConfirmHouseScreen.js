@@ -87,7 +87,10 @@ class ConfirmHouse extends Component {
         // this.props.hideLoading();
     }
     async _confirmHouse() {
-        let points = 30 + this.state.point_pin;
+        var points = 30 + this.state.point_pin;
+        if(this.state.pin === 0){
+            points = 30
+        }
         let points_user = this.props.user_info.info_user.point;
         if (points_user >= points) {
             let user_point = points_user - points;
